@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulate colour vision deficiency on everyday Hong Kong scenes.">
+  <title>Experience - SeeClear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Page owner: Programmer B. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav-bar" aria-label="Main">
+      <a class="logo" href="index.html">SeeClear</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="experience.html" class="active" aria-current="page">Experience</a></li>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="checker.html">Checker</a></li>
+        <li><a href="challenge.html">Challenge</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <h1>Experience</h1>
+    <p>Pick a scene and a vision mode to see how others see it.</p>
+
+    <!-- Scene picker: MTR sign, bus stop, cha chaan teng menu, course web page -->
+    <section class="scene-picker" aria-labelledby="sceneTitle">
+      <h2 id="sceneTitle">Scenes</h2>
+      <div id="sceneList">
+        <!-- Scene buttons go here (from data/scenes.js) -->
+      </div>
+    </section>
+
+    <!-- Vision mode and severity -->
+    <section class="vision-controls" aria-labelledby="modeTitle">
+      <h2 id="modeTitle">Vision mode</h2>
+      <div id="modeList">
+        <!-- Protanopia / Deuteranopia / Tritanopia / Achromatopsia / Presbyopia -->
+      </div>
+      <label for="severity">Severity</label>
+      <input type="range" id="severity" min="0" max="100" value="100">
+    </section>
+
+    <!-- Scene view with split slider and one-line caption -->
+    <section class="scene-view">
+      <div id="sceneCompare" class="split-compare">
+        <!-- Split slider goes here (filters.js) -->
+      </div>
+      <p id="sceneCaption"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>SeeClear &middot; CS1102 Group Project &middot; City University of Hong Kong &middot; 2026</p>
+    <p>Supporting <a href="about.html#sdg">SDG 11 and SDG 3</a> &middot; <a href="about.html">About us</a></p>
+  </footer>
+
+  <script src="data/scenes.js"></script>
+  <script src="js/color.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/experience.js"></script>
+</body>
+</html>

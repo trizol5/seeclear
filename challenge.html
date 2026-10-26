@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Test your eye for accessible colour.">
+  <title>Challenge - SeeClear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Page owner: Programmer B. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav-bar" aria-label="Main">
+      <a class="logo" href="index.html">SeeClear</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="checker.html">Checker</a></li>
+        <li><a href="challenge.html" class="active" aria-current="page">Challenge</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <h1>Challenge</h1>
+
+    <!-- Mode A: guess if a colour pair passes, 10 rounds -->
+    <section class="mode-guess" aria-labelledby="guessTitle">
+      <h2 id="guessTitle">Pass or fail?</h2>
+      <div id="guessGame">
+        <!-- Guessing game goes here -->
+      </div>
+    </section>
+
+    <!-- Mode B: fix a badly coloured poster -->
+    <section class="mode-fix" aria-labelledby="fixTitle">
+      <h2 id="fixTitle">Fix the poster</h2>
+      <div id="fixGame">
+        <!-- Fix challenge goes here -->
+      </div>
+    </section>
+
+    <!-- Badge wall (localStorage) -->
+    <section class="badges" aria-labelledby="badgeTitle">
+      <h2 id="badgeTitle">Your badges</h2>
+      <div id="badgeWall">
+        <!-- Badges go here -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>SeeClear &middot; CS1102 Group Project &middot; City University of Hong Kong &middot; 2026</p>
+    <p>Supporting <a href="about.html#sdg">SDG 11 and SDG 3</a> &middot; <a href="about.html">About us</a></p>
+  </footer>
+
+  <script src="data/scenes.js"></script>
+  <script src="js/color.js"></script>
+  <script src="js/challenge.js"></script>
+</body>
+</html>

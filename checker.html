@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Check and fix the contrast of your text and background colours.">
+  <title>Contrast Checker - SeeClear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Page owner: Programmer A. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav-bar" aria-label="Main">
+      <a class="logo" href="index.html">SeeClear</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="checker.html" class="active" aria-current="page">Checker</a></li>
+        <li><a href="challenge.html">Challenge</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <h1>Contrast Checker</h1>
+
+    <!-- Input: two colour pickers, or pick colours from an uploaded image -->
+    <section class="checker-input" aria-labelledby="inputTitle">
+      <h2 id="inputTitle">Your colours</h2>
+      <label for="textColor">Text colour</label>
+      <input type="color" id="textColor" value="#767676">
+      <label for="bgColor">Background colour</label>
+      <input type="color" id="bgColor" value="#ffffff">
+      <!-- Image upload and click-to-pick go here (week 3) -->
+    </section>
+
+    <!-- Result: contrast gauge and AA / AAA badges -->
+    <section class="checker-result" aria-labelledby="resultTitle" aria-live="polite">
+      <h2 id="resultTitle">Result</h2>
+      <p>Contrast ratio: <span id="ratio">-</span></p>
+      <div id="gauge">
+        <!-- Contrast gauge goes here -->
+      </div>
+      <div id="badges">
+        <!-- AA / AAA badges for normal and large text -->
+      </div>
+      <button type="button" id="fixBtn" class="btn btn-primary">Fix it for me</button>
+    </section>
+
+    <!-- Preview with vision modes -->
+    <section class="checker-preview" aria-labelledby="previewTitle">
+      <h2 id="previewTitle">Preview</h2>
+      <div id="preview">
+        <p>Sample text</p>
+        <button type="button">Sample button</button>
+      </div>
+    </section>
+
+    <!-- History and copy CSS (week 3) -->
+    <section class="checker-history" aria-labelledby="historyTitle">
+      <h2 id="historyTitle">History</h2>
+      <ul id="historyList"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>SeeClear &middot; CS1102 Group Project &middot; City University of Hong Kong &middot; 2026</p>
+    <p>Supporting <a href="about.html#sdg">SDG 11 and SDG 3</a> &middot; <a href="about.html">About us</a></p>
+  </footer>
+
+  <script src="js/color.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/checker.js"></script>
+</body>
+</html>
