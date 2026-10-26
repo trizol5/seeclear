@@ -1,0 +1,342 @@
+/*
+  style.css - shared styles for all SeeClear pages
+  Owner: Programmer A. Programmer B: ask before changing, add page-specific
+  rules at the end of this file under the page's heading comment.
+
+  Neutral first version (white / light grey / dark grey) so the colours being
+  tested stand out. All text colours pass WCAG AA on --color-bg and --color-surface.
+*/
+
+/* ===== Colour and size variables ===== */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f4f4f4;       /* cards and footer */
+  --color-text: #1f1f1f;          /* 16.3:1 on bg */
+  --color-text-muted: #595959;    /* 7.0:1 on bg, 6.4:1 on surface */
+  --color-border: #d6d6d6;        /* decoration only */
+  --color-border-strong: #767676; /* form controls, 4.5:1 on bg */
+  --color-primary: #2b2b2b;       /* primary button background */
+  --color-on-primary: #ffffff;    /* 14.4:1 on primary */
+  --color-link: #0b57b0;          /* 7.0:1 on bg */
+  --color-focus: #0b57b0;
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  --text-base: 18px;
+  --radius: 8px;
+  --space: 16px;
+  --max-width: 1080px;
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--text-base);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0 0 calc(var(--space) * 0.75);
+}
+
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin: 0 0 var(--space);
+}
+
+a {
+  color: var(--color-link);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space);
+  top: -100px;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius);
+  z-index: 10;
+}
+
+.skip-link:focus {
+  top: var(--space);
+}
+
+/* ===== Header and nav bar ===== */
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.nav-bar {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px var(--space);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space);
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.nav-links a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  background: var(--color-surface);
+}
+
+.nav-links a.active {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 3px;
+}
+
+/* ===== Main layout ===== */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: calc(var(--space) * 2) var(--space);
+}
+
+main > section {
+  margin-bottom: calc(var(--space) * 2);
+  padding: calc(var(--space) * 1.5);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+}
+
+/* Two-column grid helper, one column on phones */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space);
+}
+
+/* ===== Buttons ===== */
+.btn,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 20px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn:hover,
+button:hover {
+  background: var(--color-surface);
+}
+
+.btn-primary {
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background: #000000;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Form controls ===== */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="number"] {
+  min-height: 48px;
+  padding: 8px 12px;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius);
+}
+
+input[type="color"] {
+  width: 64px;
+  height: 48px;
+  padding: 2px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  cursor: pointer;
+}
+
+input[type="range"] {
+  width: 100%;
+  max-width: 400px;
+  accent-color: var(--color-primary);
+}
+
+/* ===== Home ===== */
+.hero {
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.6rem;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space);
+  background: none;
+}
+
+.stat-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space);
+}
+
+/* Split comparison area (slider logic in filters.js) */
+.split-compare {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  margin: var(--space) 0;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  padding: calc(var(--space) * 1.5) var(--space);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.site-footer p {
+  margin: 4px 0;
+}
+
+/* ===== Phones ===== */
+@media (max-width: 640px) {
+  html {
+    font-size: 17px;
+  }
+
+  h1,
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .nav-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  main > section {
+    padding: var(--space);
+  }
+
+  .cta .btn {
+    width: 100%;
+  }
+}
+
+/* Respect users who turn off animation */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ===== Page-specific rules below (add under a heading comment per page) ===== */
