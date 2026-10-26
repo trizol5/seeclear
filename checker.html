@@ -30,32 +30,52 @@
     <!-- Input: two colour pickers, or pick colours from an uploaded image -->
     <section class="checker-input" aria-labelledby="inputTitle">
       <h2 id="inputTitle">Your colours</h2>
-      <label for="textColor">Text colour</label>
-      <input type="color" id="textColor" value="#767676">
-      <label for="bgColor">Background colour</label>
-      <input type="color" id="bgColor" value="#ffffff">
+      <div class="grid-2">
+        <div class="color-field">
+          <label for="textColorHex">Text colour</label>
+          <div class="color-row">
+            <input type="color" id="textColor" value="#767676" aria-label="Pick text colour">
+            <input type="text" id="textColorHex" value="#767676" maxlength="7" spellcheck="false">
+          </div>
+          <p class="field-error" id="textColorError" hidden>Use a hex code like #1a73e8</p>
+        </div>
+        <div class="color-field">
+          <label for="bgColorHex">Background colour</label>
+          <div class="color-row">
+            <input type="color" id="bgColor" value="#ffffff" aria-label="Pick background colour">
+            <input type="text" id="bgColorHex" value="#ffffff" maxlength="7" spellcheck="false">
+          </div>
+          <p class="field-error" id="bgColorError" hidden>Use a hex code like #1a73e8</p>
+        </div>
+      </div>
+      <button type="button" id="swapBtn" class="btn">Swap colours</button>
       <!-- Image upload and click-to-pick go here (week 3) -->
     </section>
 
     <!-- Result: contrast gauge and AA / AAA badges -->
-    <section class="checker-result" aria-labelledby="resultTitle" aria-live="polite">
+    <section class="checker-result" aria-labelledby="resultTitle">
       <h2 id="resultTitle">Result</h2>
-      <p>Contrast ratio: <span id="ratio">-</span></p>
+      <p class="ratio-line">Contrast ratio: <strong id="ratio">-</strong></p>
+      <p id="resultSummary" class="sr-only" aria-live="polite"></p>
       <div id="gauge">
-        <!-- Contrast gauge goes here -->
+        <!-- Contrast gauge goes here (week 2) -->
       </div>
-      <div id="badges">
-        <!-- AA / AAA badges for normal and large text -->
+      <div id="badges" class="badge-grid">
+        <div class="badge" id="badgeNormalAA"><span class="badge-name">Normal text AA</span> <span class="badge-result">-</span></div>
+        <div class="badge" id="badgeNormalAAA"><span class="badge-name">Normal text AAA</span> <span class="badge-result">-</span></div>
+        <div class="badge" id="badgeLargeAA"><span class="badge-name">Large text AA</span> <span class="badge-result">-</span></div>
+        <div class="badge" id="badgeLargeAAA"><span class="badge-name">Large text AAA</span> <span class="badge-result">-</span></div>
       </div>
       <button type="button" id="fixBtn" class="btn btn-primary">Fix it for me</button>
     </section>
 
-    <!-- Preview with vision modes -->
+    <!-- Preview with vision modes (vision modes come from filters.js, Programmer B) -->
     <section class="checker-preview" aria-labelledby="previewTitle">
       <h2 id="previewTitle">Preview</h2>
       <div id="preview">
-        <p>Sample text</p>
-        <button type="button">Sample button</button>
+        <p class="preview-normal">Normal text: Club fair this Friday, 12:00 at the Main Concourse.</p>
+        <p class="preview-large">Large text: Join us!</p>
+        <button type="button" id="previewBtn" tabindex="-1">Sample button</button>
       </div>
     </section>
 
