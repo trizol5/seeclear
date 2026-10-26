@@ -413,6 +413,71 @@ input[aria-invalid="true"] {
   color: #b3261e; /* 6.5:1 on white */
 }
 
+.gauge {
+  margin: var(--space) 0 8px;
+}
+
+.gauge-track {
+  position: relative;
+  height: 24px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-strong);
+  border-radius: 12px;
+}
+
+.gauge-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 10px;
+  background: var(--color-text-muted);
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+/* Fill colour follows the normal-text result; the badges also say it in words */
+.gauge-fill.level-fail {
+  background: #b3261e;
+}
+
+.gauge-fill.level-aa {
+  background: #8a5a00;
+}
+
+.gauge-fill.level-aaa {
+  background: #1b6e2a;
+}
+
+.gauge-tick {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-text);
+}
+
+.gauge-tick span {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.gauge-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.gauge-legend {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
 #preview {
   padding: calc(var(--space) * 1.5);
   border-radius: var(--radius);

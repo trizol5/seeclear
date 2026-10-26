@@ -15,6 +15,8 @@ const ratioEl = document.getElementById("ratio");
 const summaryEl = document.getElementById("resultSummary");
 const preview = document.getElementById("preview");
 const previewBtn = document.getElementById("previewBtn");
+const gauge = document.getElementById("gauge");
+const gaugeFill = document.getElementById("gaugeFill");
 
 // Each badge: which element shows it, which text size and which level it checks
 const BADGES = [
@@ -28,10 +30,35 @@ const BADGES = [
 let textColor = normalizeHex(textPicker.value);
 let bgColor = normalizeHex(bgPicker.value);
 
+// ===== Contrast gauge =====
+// Ratio (1-21) -> position along the gauge (0-100%), on a log scale:
+// 1 sits at 0%, 21 at 100%, and the pass lines 3 / 4.5 / 7 sit near the middle
+function gaugePercent(ratio) {
+  return Math.log(ratio) / Math.log(21) * 100;
+}
+
+// Put each threshold tick at its place on the gauge
+function placeTicks() {
+  const ticks = document.querySelectorAll(".gauge-tick");
+  for (let i = 0; i < ticks.length; i++) {
+    const ratio = Number(ticks[i].dataset.ratio);
+    ticks[i].style.left = gaugePercent(ratio) + "%";
+  }
+}
+
+function updateGauge(ratio) {
+  // The CSS transition on width makes the bar slide to its new length
+  gaugeFill.style.width = gaugePercent(ratio) + "%";
+  gaugeFill.className = "gauge-fill level-" + rating(ratio, false).toLowerCase();
+  gauge.setAttribute("aria-valuenow", formatRatio(ratio));
+  gauge.setAttribute("aria-valuetext", formatRatio(ratio) + " to 1");
+}
+
 // ===== Update the result whenever a colour changes =====
 function updateResult() {
   const ratio = contrast(textColor, bgColor);
   ratioEl.textContent = formatRatio(ratio) + " : 1";
+  updateGauge(ratio);
 
   for (let i = 0; i < BADGES.length; i++) {
     const badge = BADGES[i];
@@ -106,6 +133,8 @@ connectColorInputs(bgPicker, bgHex, bgError, function (color) {
   bgColor = color;
   updateResult();
 });
+
+placeTicks();
 
 swapBtn.addEventListener("click", function () {
   setColors(bgColor, textColor);

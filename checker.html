@@ -57,9 +57,17 @@
       <h2 id="resultTitle">Result</h2>
       <p class="ratio-line">Contrast ratio: <strong id="ratio">-</strong></p>
       <p id="resultSummary" class="sr-only" aria-live="polite"></p>
-      <div id="gauge">
-        <!-- Contrast gauge goes here (week 2) -->
+      <!-- Gauge on a log scale from 1 to 21, so the important 3-7 range gets more room -->
+      <div id="gauge" class="gauge" role="meter" aria-label="Contrast ratio" aria-valuemin="1" aria-valuemax="21" aria-valuenow="1">
+        <div class="gauge-track">
+          <div class="gauge-fill" id="gaugeFill"></div>
+          <div class="gauge-tick" data-ratio="3"><span>3</span></div>
+          <div class="gauge-tick" data-ratio="4.5"><span>4.5</span></div>
+          <div class="gauge-tick" data-ratio="7"><span>7</span></div>
+        </div>
+        <div class="gauge-ends" aria-hidden="true"><span>1</span><span>21</span></div>
       </div>
+      <p class="gauge-legend">3 = large text AA &middot; 4.5 = normal text AA, large text AAA &middot; 7 = normal text AAA</p>
       <div id="badges" class="badge-grid">
         <div class="badge" id="badgeNormalAA"><span class="badge-name">Normal text AA</span> <span class="badge-result">-</span></div>
         <div class="badge" id="badgeNormalAAA"><span class="badge-name">Normal text AAA</span> <span class="badge-result">-</span></div>
