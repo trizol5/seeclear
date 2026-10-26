@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>scenes.js format check - SeeClear</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .pass { color: #1b6e2a; }
+    .fail { color: #b3261e; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <!-- Format check for data/scenes.js (format owner: Programmer A).
+       Open this file in a browser after editing scenes.js. -->
+  <h1>scenes.js format check</h1>
+  <p id="summary"></p>
+  <ul id="results"></ul>
+
+  <script src="../js/color.js"></script>
+  <script src="../data/scenes.js"></script>
+  <script>
+    const results = document.getElementById("results");
+    let problems = 0;
+
+    function report(ok, message) {
+      if (!ok) {
+        problems++;
+      }
+      const item = document.createElement("li");
+      item.className = ok ? "pass" : "fail";
+      item.textContent = (ok ? "OK   " : "FIX  ") + message;
+      results.appendChild(item);
+    }
+
+    function checkColour(where, value) {
+      const ok = typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value);
+      if (!ok) {
+        report(false, where + ": colour must be like \"#1a73e8\", got " + JSON.stringify(value));
+      }
+    }
+
+    function checkText(where, value) {
+      if (typeof value !== "string") {
+        report(false, where + ": must be text in quotes, got " + JSON.stringify(value));
+      }
+    }
+
+    function checkIds(listName, list) {
+      const seen = [];
+      for (let i = 0; i < list.length; i++) {
+        const id = list[i].id;
+        if (typeof id !== "string" || !/^[a-z0-9-]+$/.test(id)) {
+          report(false, listName + "[" + i + "]: id must be lowercase-with-hyphens, got " + JSON.stringify(id));
+        } else if (seen.indexOf(id) !== -1) {
+          report(false, listName + ": id \"" + id + "\" is used twice");
+        }
+        seen.push(id);
+      }
+    }
+
+    function checkPercent(where, value) {
+      if (typeof value !== "number" || value < 0 || value > 100) {
+        report(false, where + ": must be a number from 0 to 100, got " + JSON.stringify(value));
+      }
+    }
+
+    // SCENES
+    report(SCENES.length === 4, "SCENES has " + SCENES.length + " scene(s) (target: 4)");
+    checkIds("SCENES", SCENES);
+    for (let i = 0; i < SCENES.length; i++) {
+      const scene = SCENES[i];
+      const where = "scene \"" + scene.id + "\"";
+      checkText(where + " name", scene.name);
+      checkText(where + " image", scene.image);
+      checkText(where + " caption", scene.caption);
+      checkIds(where + " layers", scene.layers);
+      for (let j = 0; j < scene.layers.length; j++) {
+        const layer = scene.layers[j];
+        const lw = where + " layer \"" + layer.id + "\"";
+        checkText(lw + " label", layer.label);
+        checkText(lw + " text", layer.text);
+        checkColour(lw + " color", layer.color);
+        checkColour(lw + " background", layer.background);
+        checkPercent(lw + " x", layer.x);
+        checkPercent(lw + " y", layer.y);
+        checkPercent(lw + " width", layer.width);
+        checkPercent(lw + " height", layer.height);
+      }
+    }
+
+    // QUIZ
+    report(QUIZ.length === 10, "QUIZ has " + QUIZ.length + " question(s) (target: 10)");
+    checkIds("QUIZ", QUIZ);
+    let passCount = 0;
+    for (let i = 0; i < QUIZ.length; i++) {
+      const q = QUIZ[i];
+      const where = "question \"" + q.id + "\"";
+      checkText(where + " text", q.text);
+      checkColour(where + " color", q.color);
+      checkColour(where + " background", q.background);
+      if (typeof q.largeText !== "boolean") {
+        report(false, where + ": largeText must be true or false");
+      }
+      const ratio = contrast(q.color, q.background);
+      if (ratio !== null && rating(ratio, q.largeText) !== "Fail") {
+        passCount++;
+      }
+    }
+    report(true, "QUIZ answers: " + passCount + " pass, " + (QUIZ.length - passCount) + " fail (aim for a mix)");
+
+    // FIX_POSTERS
+    report(FIX_POSTERS.length >= 1, "FIX_POSTERS has " + FIX_POSTERS.length + " poster(s) (target: 1-2)");
+    checkIds("FIX_POSTERS", FIX_POSTERS);
+    for (let i = 0; i < FIX_POSTERS.length; i++) {
+      const poster = FIX_POSTERS[i];
+      const where = "poster \"" + poster.id + "\"";
+      checkText(where + " title", poster.title);
+      checkColour(where + " background", poster.background);
+      checkIds(where + " blocks", poster.blocks);
+      for (let j = 0; j < poster.blocks.length; j++) {
+        const block = poster.blocks[j];
+        const bw = where + " block \"" + block.id + "\"";
+        checkText(bw + " text", block.text);
+        checkColour(bw + " color", block.color);
+        if (typeof block.largeText !== "boolean") {
+          report(false, bw + ": largeText must be true or false");
+        }
+      }
+    }
+
+    document.getElementById("summary").textContent = problems === 0
+      ? "Format OK"
+      : problems + " problem(s) to fix";
+  </script>
+</body>
+</html>

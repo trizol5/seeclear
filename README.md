@@ -31,7 +31,8 @@ seeclear/
 │   └── scenes.js       Scenes and quiz data      (format: A, content: Design & Content)
 ├── img/                Scene images, copyright-free only
 └── tests/
-    └── color.test.html Self-test for color.js: open in a browser (Programmer A)
+    ├── color.test.html Self-test for color.js: open in a browser (Programmer A)
+    └── data.test.html  Format check for data/scenes.js: open after editing it
 ```
 
 ## Team rules
