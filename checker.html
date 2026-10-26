@@ -74,7 +74,16 @@
         <div class="badge" id="badgeLargeAA"><span class="badge-name">Large text AA</span> <span class="badge-result">-</span></div>
         <div class="badge" id="badgeLargeAAA"><span class="badge-name">Large text AAA</span> <span class="badge-result">-</span></div>
       </div>
-      <button type="button" id="fixBtn" class="btn btn-primary">Fix it for me</button>
+      <div class="fix-row">
+        <label for="fixTarget">Fix to</label>
+        <select id="fixTarget">
+          <option value="4.5">AA for normal text (4.5)</option>
+          <option value="7">AAA for normal text (7)</option>
+          <option value="3">AA for large text (3)</option>
+        </select>
+        <button type="button" id="fixBtn" class="btn btn-primary">Fix it for me</button>
+      </div>
+      <p id="fixMessage" class="fix-message" aria-live="polite"></p>
     </section>
 
     <!-- Preview with vision modes (vision modes come from filters.js, Programmer B) -->

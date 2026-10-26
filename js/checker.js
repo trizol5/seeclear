@@ -17,6 +17,9 @@ const preview = document.getElementById("preview");
 const previewBtn = document.getElementById("previewBtn");
 const gauge = document.getElementById("gauge");
 const gaugeFill = document.getElementById("gaugeFill");
+const fixTarget = document.getElementById("fixTarget");
+const fixBtn = document.getElementById("fixBtn");
+const fixMessage = document.getElementById("fixMessage");
 
 // Each badge: which element shows it, which text size and which level it checks
 const BADGES = [
@@ -54,9 +57,69 @@ function updateGauge(ratio) {
   gauge.setAttribute("aria-valuetext", formatRatio(ratio) + " to 1");
 }
 
+// ===== One-click fix =====
+// Move the text colour step by step towards black (or white) until the
+// contrast just reaches the target, so the new colour stays close to the original.
+// Returns { color, steps, reached }.
+function stepTowards(hex, endValue, background, target) {
+  const start = hexToRgb(hex);
+  let amount = 0;    // 0 = original colour, 1 = fully black or white
+  let steps = 0;
+  let candidate = hex;
+  while (contrast(candidate, background) < target && amount < 1) {
+    amount = Math.min(1, amount + 0.01);
+    steps++;
+    candidate = rgbToHex(
+      start[0] + (endValue - start[0]) * amount,
+      start[1] + (endValue - start[1]) * amount,
+      start[2] + (endValue - start[2]) * amount
+    );
+  }
+  return {
+    color: candidate,
+    steps: steps,
+    reached: contrast(candidate, background) >= target
+  };
+}
+
+function fixTextColor() {
+  const target = Number(fixTarget.value);
+  const before = textColor;
+
+  if (contrast(before, bgColor) >= target) {
+    fixMessage.textContent = "These colours already reach " + target + " : 1. Nothing to fix.";
+    return;
+  }
+
+  // Try both directions and keep the one that needs fewer steps
+  const darker = stepTowards(before, 0, bgColor, target);
+  const lighter = stepTowards(before, 255, bgColor, target);
+  let best;
+  if (darker.reached && lighter.reached) {
+    best = darker.steps <= lighter.steps ? darker : lighter;
+  } else if (darker.reached) {
+    best = darker;
+  } else if (lighter.reached) {
+    best = lighter;
+  } else {
+    // Neither black nor white text reaches the target on this background
+    best = contrast("#000000", bgColor) >= contrast("#ffffff", bgColor) ? darker : lighter;
+    setColors(best.color, bgColor);
+    fixMessage.textContent = "No text colour can reach " + target + " : 1 on this background. " +
+      "Changed text to " + best.color + " (" + formatRatio(contrast(best.color, bgColor)) +
+      " : 1), the best possible. Try a lighter or darker background.";
+    return;
+  }
+
+  setColors(best.color, bgColor);
+  fixMessage.textContent = "Text colour changed from " + before + " to " + best.color +
+    " in " + best.steps + (best.steps === 1 ? " step" : " steps") + ". Contrast is now " + formatRatio(contrast(best.color, bgColor)) + " : 1.";
+}
+
 // ===== Update the result whenever a colour changes =====
 function updateResult() {
   const ratio = contrast(textColor, bgColor);
+  fixMessage.textContent = "";
   ratioEl.textContent = formatRatio(ratio) + " : 1";
   updateGauge(ratio);
 
@@ -135,6 +198,8 @@ connectColorInputs(bgPicker, bgHex, bgError, function (color) {
 });
 
 placeTicks();
+
+fixBtn.addEventListener("click", fixTextColor);
 
 swapBtn.addEventListener("click", function () {
   setColors(bgColor, textColor);
