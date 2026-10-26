@@ -27,6 +27,8 @@ seeclear/
 │   ├── experience.js                             (Programmer B)
 │   ├── learn.js                                  (Programmer B)
 │   └── challenge.js                              (Programmer B)
+├── docs/
+│   └── genai-log-programmer-a.md  GenAI usage record, Programmer A
 ├── data/
 │   └── scenes.js       Scenes and quiz data      (format: A, content: Design & Content)
 ├── img/                Scene images, copyright-free only
