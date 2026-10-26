@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>color.js tests - SeeClear</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .pass { color: #1b6e2a; }
+    .fail { color: #b3261e; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <!-- Developer self-test for js/color.js (Programmer A). Open this file in a browser. -->
+  <h1>color.js tests</h1>
+  <p id="summary"></p>
+  <ul id="results"></ul>
+
+  <script src="../js/color.js"></script>
+  <script>
+    const results = document.getElementById("results");
+    let passed = 0;
+    let total = 0;
+
+    function check(name, actual, expected) {
+      total++;
+      const ok = JSON.stringify(actual) === JSON.stringify(expected);
+      if (ok) {
+        passed++;
+      }
+      const item = document.createElement("li");
+      item.className = ok ? "pass" : "fail";
+      item.textContent = (ok ? "PASS " : "FAIL ") + name +
+        " -> got " + JSON.stringify(actual) + ", expected " + JSON.stringify(expected);
+      results.appendChild(item);
+    }
+
+    // Colour code conversion
+    check("hexToRgb #1A73E8", hexToRgb("#1A73E8"), [26, 115, 232]);
+    check("hexToRgb without #", hexToRgb("1a73e8"), [26, 115, 232]);
+    check("hexToRgb short form #fff", hexToRgb("#fff"), [255, 255, 255]);
+    check("hexToRgb invalid", hexToRgb("#12345g"), null);
+    check("hexToRgb wrong length", hexToRgb("#1234"), null);
+    check("rgbToHex 26,115,232", rgbToHex(26, 115, 232), "#1a73e8");
+    check("rgbToHex pads zeros", rgbToHex(0, 5, 10), "#00050a");
+    check("rgbToHex clamps", rgbToHex(300, -5, 127.6), "#ff0080");
+
+    // Luminance
+    check("luminance black", luminance([0, 0, 0]), 0);
+    check("luminance white", luminance([255, 255, 255]), 1);
+
+    // Contrast ratios (reference values from the WCAG formula)
+    check("black on white = 21", formatRatio(contrast("#000000", "#ffffff")), "21.00");
+    check("same colour = 1", formatRatio(contrast("#1a73e8", "#1a73e8")), "1.00");
+    check("order does not matter", contrast("#ffffff", "#767676"), contrast("#767676", "#ffffff"));
+    check("#767676 on white = 4.54", formatRatio(contrast("#767676", "#ffffff")), "4.54");
+    check("#777777 on white = 4.47", formatRatio(contrast("#777777", "#ffffff")), "4.47");
+    check("#0000ff on white = 8.59", formatRatio(contrast("#0000ff", "#ffffff")), "8.59");
+    check("invalid colour", contrast("red", "#ffffff"), null);
+
+    // Ratings
+    check("21 normal text", rating(21, false), "AAA");
+    check("4.54 normal text", rating(4.54, false), "AA");
+    check("4.47 normal text", rating(4.47, false), "Fail");
+    check("4.47 large text", rating(4.47, true), "AA");
+    check("4.5 large text", rating(4.5, true), "AAA");
+    check("2.9 large text", rating(2.9, true), "Fail");
+
+    document.getElementById("summary").textContent = passed + " / " + total + " tests passed";
+  </script>
+</body>
+</html>

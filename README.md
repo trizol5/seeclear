@@ -29,7 +29,9 @@ seeclear/
 │   └── challenge.js                              (Programmer B)
 ├── data/
 │   └── scenes.js       Scenes and quiz data      (format: A, content: Design & Content)
-└── img/                Scene images, copyright-free only
+├── img/                Scene images, copyright-free only
+└── tests/
+    └── color.test.html Self-test for color.js: open in a browser (Programmer A)
 ```
 
 ## Team rules
