@@ -380,6 +380,54 @@ input[aria-invalid="true"] {
   margin-top: var(--space);
 }
 
+.image-pick {
+  margin-top: calc(var(--space) * 1.5);
+  padding-top: var(--space);
+  border-top: 1px solid var(--color-border);
+}
+
+.image-pick input[type="file"] {
+  margin-bottom: var(--space);
+  font: inherit;
+}
+
+.pick-target {
+  margin: 0 0 var(--space);
+  padding: 0;
+  border: 0;
+}
+
+.pick-target legend {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.pick-target label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: var(--space);
+  font-weight: 400;
+}
+
+.image-hint {
+  margin: 8px 0;
+  color: var(--color-text-muted);
+}
+
+.image-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  cursor: crosshair;
+}
+
+.image-canvas[hidden] {
+  display: none;
+}
+
 .ratio-line {
   font-size: 1.4rem;
 }

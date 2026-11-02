@@ -49,7 +49,21 @@
         </div>
       </div>
       <button type="button" id="swapBtn" class="btn">Swap colours</button>
-      <!-- Image upload and click-to-pick go here (week 3) -->
+
+      <!-- Pick colours from an uploaded image (Canvas getImageData) -->
+      <div class="image-pick">
+        <h3>Pick colours from an image</h3>
+        <label for="imageInput">Upload a poster, slide or screenshot</label>
+        <input type="file" id="imageInput" accept="image/*">
+        <fieldset class="pick-target">
+          <legend>Clicking the image sets the</legend>
+          <label><input type="radio" name="pickTarget" value="text" checked> Text colour</label>
+          <label><input type="radio" name="pickTarget" value="bg"> Background colour</label>
+        </fieldset>
+        <button type="button" id="eyeDropperBtn" class="btn" hidden>Pick from anywhere on screen</button>
+        <p id="imageHint" class="image-hint" aria-live="polite">The image stays on your computer; nothing is uploaded to a server.</p>
+        <canvas id="imageCanvas" class="image-canvas" hidden></canvas>
+      </div>
     </section>
 
     <!-- Result: contrast gauge and AA / AAA badges -->

@@ -20,6 +20,10 @@ const gaugeFill = document.getElementById("gaugeFill");
 const fixTarget = document.getElementById("fixTarget");
 const fixBtn = document.getElementById("fixBtn");
 const fixMessage = document.getElementById("fixMessage");
+const imageInput = document.getElementById("imageInput");
+const imageCanvas = document.getElementById("imageCanvas");
+const imageHint = document.getElementById("imageHint");
+const eyeDropperBtn = document.getElementById("eyeDropperBtn");
 
 // Each badge: which element shows it, which text size and which level it checks
 const BADGES = [
@@ -114,6 +118,75 @@ function fixTextColor() {
   setColors(best.color, bgColor);
   fixMessage.textContent = "Text colour changed from " + before + " to " + best.color +
     " in " + best.steps + (best.steps === 1 ? " step" : " steps") + ". Contrast is now " + formatRatio(contrast(best.color, bgColor)) + " : 1.";
+}
+
+// ===== Pick colours from an uploaded image =====
+// Largest width the image is drawn at; bigger images are scaled down
+const MAX_IMAGE_WIDTH = 900;
+
+// Which colour the next pick sets: "text" or "bg"
+function pickTarget() {
+  return document.querySelector('input[name="pickTarget"]:checked').value;
+}
+
+function usePickedColor(hex) {
+  if (pickTarget() === "text") {
+    setColors(hex, bgColor);
+    imageHint.textContent = "Text colour set to " + hex + ".";
+  } else {
+    setColors(textColor, hex);
+    imageHint.textContent = "Background colour set to " + hex + ".";
+  }
+}
+
+// Draw the chosen file on the canvas (local file only, so the pixels can be read)
+imageInput.addEventListener("change", function () {
+  const file = imageInput.files[0];
+  if (!file) {
+    return;
+  }
+  if (!file.type.startsWith("image/")) {
+    imageHint.textContent = "Please choose an image file (PNG, JPG, ...).";
+    return;
+  }
+  const img = new Image();
+  const url = URL.createObjectURL(file);
+  img.onload = function () {
+    const scale = Math.min(1, MAX_IMAGE_WIDTH / img.width);
+    imageCanvas.width = Math.round(img.width * scale);
+    imageCanvas.height = Math.round(img.height * scale);
+    imageCanvas.getContext("2d").drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
+    imageCanvas.hidden = false;
+    URL.revokeObjectURL(url);
+    imageHint.textContent = "Click the image to pick a colour.";
+  };
+  img.onerror = function () {
+    imageHint.textContent = "This image could not be opened. Try a PNG or JPG.";
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+});
+
+// Read the pixel under the click with getImageData -> [R, G, B, A]
+imageCanvas.addEventListener("click", function (event) {
+  const rect = imageCanvas.getBoundingClientRect();
+  // The canvas may be shown smaller than its real size, so scale the click position
+  const x = Math.floor((event.clientX - rect.left) * imageCanvas.width / rect.width);
+  const y = Math.floor((event.clientY - rect.top) * imageCanvas.height / rect.height);
+  const pixel = imageCanvas.getContext("2d").getImageData(x, y, 1, 1).data;
+  usePickedColor(rgbToHex(pixel[0], pixel[1], pixel[2]));
+});
+
+// Extra: EyeDropper API picks from anywhere on screen (Chrome and Edge only)
+if ("EyeDropper" in window) {
+  eyeDropperBtn.hidden = false;
+  eyeDropperBtn.addEventListener("click", function () {
+    new EyeDropper().open().then(function (result) {
+      usePickedColor(normalizeHex(result.sRGBHex));
+    }).catch(function () {
+      // The user pressed Esc: keep the current colours
+    });
+  });
 }
 
 // ===== Update the result whenever a colour changes =====
