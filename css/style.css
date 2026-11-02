@@ -567,6 +567,33 @@ input[aria-invalid="true"] {
   cursor: default;
 }
 
+.copy-css {
+  margin-top: calc(var(--space) * 1.5);
+  padding-top: var(--space);
+  border-top: 1px solid var(--color-border);
+}
+
+.copy-css pre {
+  margin: 0 0 12px;
+  padding: 12px var(--space);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.copy-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.copy-message {
+  margin: 8px 0 0;
+  min-height: 1.6em;
+  color: var(--color-text-muted);
+}
+
 .history-hint {
   color: var(--color-text-muted);
 }

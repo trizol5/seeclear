@@ -26,6 +26,8 @@ const imageHint = document.getElementById("imageHint");
 const eyeDropperBtn = document.getElementById("eyeDropperBtn");
 const historyList = document.getElementById("historyList");
 const undoBtn = document.getElementById("undoBtn");
+const cssCode = document.getElementById("cssCode");
+const copyMessage = document.getElementById("copyMessage");
 
 // Each badge: which element shows it, which text size and which level it checks
 const BADGES = [
@@ -251,10 +253,53 @@ function undoLast() {
   renderHistory();
 }
 
+// ===== Copy CSS and colour codes =====
+function cssText() {
+  return "color: " + textColor + ";\nbackground-color: " + bgColor + ";";
+}
+
+// Copy to the clipboard; older browsers fall back to selecting a hidden text box
+function copyText(text, label) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(function () {
+      copyMessage.textContent = label + " copied.";
+    }).catch(function () {
+      copyFallback(text, label);
+    });
+  } else {
+    copyFallback(text, label);
+  }
+}
+
+function copyFallback(text, label) {
+  const box = document.createElement("textarea");
+  box.value = text;
+  box.setAttribute("readonly", "");
+  box.style.position = "absolute";
+  box.style.left = "-9999px";
+  document.body.appendChild(box);
+  box.select();
+  const ok = document.execCommand("copy");
+  document.body.removeChild(box);
+  copyMessage.textContent = ok ? label + " copied." : "Copy failed: select the text and press Ctrl+C.";
+}
+
+document.getElementById("copyCssBtn").addEventListener("click", function () {
+  copyText(cssText(), "CSS");
+});
+document.getElementById("copyTextBtn").addEventListener("click", function () {
+  copyText(textColor, "Text colour " + textColor);
+});
+document.getElementById("copyBgBtn").addEventListener("click", function () {
+  copyText(bgColor, "Background colour " + bgColor);
+});
+
 // ===== Update the result whenever a colour changes =====
 function updateResult() {
   const ratio = contrast(textColor, bgColor);
   fixMessage.textContent = "";
+  copyMessage.textContent = "";
+  cssCode.textContent = cssText();
   ratioEl.textContent = formatRatio(ratio) + " : 1";
   updateGauge(ratio);
 
