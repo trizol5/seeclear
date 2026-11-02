@@ -24,6 +24,8 @@ const imageInput = document.getElementById("imageInput");
 const imageCanvas = document.getElementById("imageCanvas");
 const imageHint = document.getElementById("imageHint");
 const eyeDropperBtn = document.getElementById("eyeDropperBtn");
+const historyList = document.getElementById("historyList");
+const undoBtn = document.getElementById("undoBtn");
 
 // Each badge: which element shows it, which text size and which level it checks
 const BADGES = [
@@ -189,6 +191,66 @@ if ("EyeDropper" in window) {
   });
 }
 
+// ===== History =====
+// Array of checked pairs, oldest first: [{ text: "#767676", bg: "#ffffff" }, ...]
+const MAX_HISTORY = 10;
+const colorHistory = [];
+let recordTimer = null;
+
+// Save the current pair once the user has stopped changing colours for a moment,
+// so dragging a colour picker adds one entry instead of hundreds
+function scheduleRecord() {
+  clearTimeout(recordTimer);
+  recordTimer = setTimeout(recordCurrent, 800);
+}
+
+function recordCurrent() {
+  const last = colorHistory[colorHistory.length - 1];
+  if (last && last.text === textColor && last.bg === bgColor) {
+    return;
+  }
+  colorHistory.push({ text: textColor, bg: bgColor });
+  if (colorHistory.length > MAX_HISTORY) {
+    colorHistory.shift();
+  }
+  renderHistory();
+}
+
+function renderHistory() {
+  historyList.innerHTML = "";
+  // Newest at the top
+  for (let i = colorHistory.length - 1; i >= 0; i--) {
+    const pair = colorHistory[i];
+    const ratio = contrast(pair.text, pair.bg);
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "history-item";
+    button.innerHTML =
+      '<span class="history-swatch" style="color:' + pair.text + ";background:" + pair.bg + '">Aa</span>' +
+      '<span class="history-codes">' + pair.text + " on " + pair.bg + "</span>" +
+      '<span class="history-ratio">' + formatRatio(ratio) + " : 1 &middot; " + rating(ratio, false) + "</span>";
+    button.addEventListener("click", function () {
+      setColors(pair.text, pair.bg);
+    });
+    item.appendChild(button);
+    historyList.appendChild(item);
+  }
+  undoBtn.disabled = colorHistory.length < 2;
+}
+
+// Undo: drop the newest entry and go back to the one before it
+function undoLast() {
+  clearTimeout(recordTimer);
+  if (colorHistory.length < 2) {
+    return;
+  }
+  colorHistory.pop();
+  const previous = colorHistory[colorHistory.length - 1];
+  setColors(previous.text, previous.bg);
+  renderHistory();
+}
+
 // ===== Update the result whenever a colour changes =====
 function updateResult() {
   const ratio = contrast(textColor, bgColor);
@@ -212,6 +274,8 @@ function updateResult() {
   previewBtn.style.color = bgColor;
   previewBtn.style.backgroundColor = textColor;
   previewBtn.style.borderColor = textColor;
+
+  scheduleRecord();
 
   summaryEl.textContent = "Contrast " + formatRatio(ratio) + " to 1. Normal text: " +
     rating(ratio, false) + ". Large text: " + rating(ratio, true) + ".";
@@ -273,6 +337,7 @@ connectColorInputs(bgPicker, bgHex, bgError, function (color) {
 placeTicks();
 
 fixBtn.addEventListener("click", fixTextColor);
+undoBtn.addEventListener("click", undoLast);
 
 swapBtn.addEventListener("click", function () {
   setColors(bgColor, textColor);
