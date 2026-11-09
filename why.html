@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why accessible colour matters in Hong Kong, and what a contrast ratio of 4.5:1 means.">
+  <title>Why it matters - SeeClear</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Page owner: skeleton and contrast section: Programmer A; statistics: Design & Content. Nav bar and footer are shared: keep them identical on all pages. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav-bar" aria-label="Main">
+      <a class="logo" href="index.html"><img src="img/logo.svg" alt="" width="36" height="36">SeeClear</a>
+      <ul class="nav-links">
+        <li><a href="index.html" data-nav="home">Home</a></li>
+        <li><a href="experience.html" data-nav="play">Play</a></li>
+        <li><a href="why.html" data-nav="why" class="active" aria-current="page">Why it matters</a></li>
+        <li><a href="checker.html" data-nav="checker">Checker</a></li>
+        <li><a href="about.html" data-nav="about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <nav class="route" id="routeBar" aria-label="Game route" data-current="why"></nav>
+
+    <h1>Why it matters</h1>
+    <p class="page-lead">You have just seen how hard the MTR map can be without full colour vision. Here is who this affects in Hong Kong, and the one number you need for the next two levels.</p>
+
+    <!-- Statistics: data lives in data/scenes.js (BACKGROUND_STATS), filled in by Design & Content -->
+    <section aria-labelledby="statsTitle">
+      <h2 id="statsTitle">Who sees colour differently in Hong Kong</h2>
+      <div class="chart-grid">
+        <figure class="chart-card">
+          <figcaption id="trendCaption">People with seeing difficulty, by survey year</figcaption>
+          <div id="trendChart" class="chart-area"></div>
+        </figure>
+        <figure class="chart-card">
+          <figcaption id="ageCaption">Age distribution</figcaption>
+          <div id="ageChart" class="chart-area"></div>
+        </figure>
+      </div>
+      <p class="chart-source">Source: <span id="statsSource"></span></p>
+    </section>
+
+    <!-- Contrast explained, with live examples computed by color.js -->
+    <section aria-labelledby="contrastTitle">
+      <h2 id="contrastTitle">What does 4.5:1 mean?</h2>
+      <p>Contrast ratio compares how light the text is with how light its background is. It goes from <strong>1:1</strong> (same colour, invisible) to <strong>21:1</strong> (black on white). The web accessibility guideline WCAG sets these minimums:</p>
+      <ul class="contrast-rules">
+        <li><strong>4.5:1</strong> for normal text (level AA)</li>
+        <li><strong>3:1</strong> for large text, 24px or bigger, or bold 18.66px (level AA)</li>
+        <li><strong>7:1</strong> for the best readability (level AAA)</li>
+      </ul>
+      <div class="contrast-samples" id="contrastSamples"></div>
+      <p>Colour vision deficiency changes which colours look different, but light against dark still works for almost everyone. That is why contrast, not colour, is what keeps text readable.</p>
+    </section>
+
+    <div class="next-block">
+      <p><strong>Ready to practise?</strong> In Level 2 you will slide colours until the text reaches its target.</p>
+      <a class="btn btn-primary" href="challenge.html#level2">Next: level 2 &rarr;</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>SeeClear &middot; CS1102 Group Project &middot; City University of Hong Kong &middot; 2026</p>
+    <p>Supporting <a href="about.html#sdg">SDG 11 and SDG 3</a> &middot; <a href="about.html">About us</a></p>
+  </footer>
+
+  <script src="data/scenes.js"></script>
+  <script src="js/color.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/why.js"></script>
+</body>
+</html>

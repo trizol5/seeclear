@@ -14,16 +14,18 @@
     <nav class="nav-bar" aria-label="Main">
       <a class="logo" href="index.html"><img src="img/logo.svg" alt="" width="36" height="36">SeeClear</a>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="experience.html">Experience</a></li>
-        <li><a href="checker.html" class="active" aria-current="page">Checker</a></li>
-        <li><a href="challenge.html">Challenge</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="index.html" data-nav="home">Home</a></li>
+        <li><a href="experience.html" data-nav="play">Play</a></li>
+        <li><a href="why.html" data-nav="why">Why it matters</a></li>
+        <li><a href="checker.html" data-nav="checker" class="active" aria-current="page">Checker</a></li>
+        <li><a href="about.html" data-nav="about">About</a></li>
       </ul>
     </nav>
   </header>
 
   <main id="main">
+    <nav class="route" id="routeBar" aria-label="Game route" data-current="checker"></nav>
+
     <h1>Contrast Checker</h1>
 
     <!-- Input: two colour pickers, or pick colours from an uploaded image -->
@@ -137,6 +139,7 @@
 
   <script src="js/color.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/game.js"></script>
   <script src="js/checker.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 A front-end-only website about accessible colour: see how people with colour vision deficiency see, then check and fix your own colours. CS1102 group project, SDG 11 (with SDG 3).
 
-The site is a route of three games: Home → Level 1 "Find the MTR line" (Experience) → Level 2 "Contrast sliders" and Level 3 "Fix the poster" (Challenge) → results, tips and links (About).
+The site is one route: Home → Level 1 "Find the MTR line" (experience.html) → Why it matters (why.html) → Level 2 "Contrast sliders" and Level 3 "Fix the poster" (challenge.html) → Results (about.html). The Checker is a tool branching off the end. Top nav: Home · Play · Why it matters · Checker · About.
 
 Plain HTML / CSS / JavaScript. No database, no backend, no build step. Hosted on GitHub Pages.
 
@@ -16,6 +16,7 @@ Open the folder in VS Code and start the **Live Server** extension (right-click 
 seeclear/
 ├── index.html          Home (from the design draft) (Programmer B; current version: A)
 ├── experience.html     Experience + Game 1       (Programmer B; Game 1: A)
+├── why.html            Why it matters            (skeleton, charts: A; statistics: Design & Content)
 ├── checker.html        Checker                   (Programmer A)
 ├── challenge.html      Games 2 and 3             (Programmer B; games: A)
 ├── about.html          Results + About           (skeleton and results: A, text: Design & Content)
@@ -28,7 +29,8 @@ seeclear/
 │   ├── checker.js                                (Programmer A)
 │   ├── experience.js   Game 1 (A) + scenes (B)
 │   ├── challenge.js    Games 2 and 3             (Programmer A)
-│   └── ending.js       Results on About page     (Programmer A)
+│   ├── ending.js       Results on About page     (Programmer A)
+│   └── why.js          Charts and contrast examples (Programmer A)
 ├── docs/
 │   └── genai-log-programmer-a.md  GenAI usage record, Programmer A
 ├── data/

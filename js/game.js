@@ -45,6 +45,7 @@ function saveScore(gameId, percent) {
   }
   if (typeof refreshRoute === "function") {
     refreshRoute();
+    updatePlayLink();
   }
 }
 
@@ -89,17 +90,21 @@ function formatTime(seconds) {
   return minutes + ":" + (rest < 10 ? "0" : "") + rest;
 }
 
-// ===== Route bar: Start - 1 - 2 - 3 - Results, joined by a line =====
-// Put <nav class="route" id="routeBar" data-current="game1"> on a page and it
-// is filled in here. data-current: "start", "game1", "game2", "game3" or "results".
-// Add data-detail="true" for the large version with a summary under each game.
+// ===== Route bar: Start - 1 - Why - 2 - 3 - Results, then the Checker as a branch =====
+// Put <nav class="route" id="routeBar" data-current="game1"> on a page and it is
+// filled in here. data-current: "start", "game1", "why", "game2", "game3",
+// "results" or "checker". Add data-detail="true" for the large version with a
+// summary under each step.
 function routeSteps() {
-  const steps = [{ id: "start", name: "Start", page: "index.html" }];
-  for (let i = 0; i < GAMES.length; i++) {
-    steps.push(GAMES[i]);
-  }
-  steps.push({ id: "results", name: "Results", page: "about.html#results" });
-  return steps;
+  return [
+    { id: "start", name: "Start", page: "index.html", dot: "▶", kind: "end" },
+    { id: "game1", name: "Level 1: " + GAMES[0].name, page: GAMES[0].page, dot: "1", kind: "game", summary: GAMES[0].summary },
+    { id: "why", name: "Why it matters", page: "why.html", dot: "i", kind: "read", summary: "Who this affects in Hong Kong, and what 4.5:1 means." },
+    { id: "game2", name: "Level 2: " + GAMES[1].name, page: GAMES[1].page, dot: "2", kind: "game", summary: GAMES[1].summary },
+    { id: "game3", name: "Level 3: " + GAMES[2].name, page: GAMES[2].page, dot: "3", kind: "game", summary: GAMES[2].summary },
+    { id: "results", name: "Results", page: "about.html#results", dot: "★", kind: "end", summary: "Your scores, level and tips." },
+    { id: "checker", name: "Take it with you: Checker", page: "checker.html", dot: "◎", kind: "tool", summary: "Check your own poster or slides any time." }
+  ];
 }
 
 function renderRoute(bar) {
@@ -111,9 +116,9 @@ function renderRoute(bar) {
 
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
-    const score = getScore(step.id);
+    const score = step.kind === "game" ? getScore(step.id) : null;
     const item = document.createElement("li");
-    item.className = "route-step";
+    item.className = "route-step kind-" + step.kind;
     item.dataset.step = step.id;
     if (score !== null) {
       item.classList.add("done");
@@ -124,11 +129,10 @@ function renderRoute(bar) {
     const dot = document.createElement("span");
     dot.className = "route-dot";
     dot.setAttribute("aria-hidden", "true");
-    // Games show their number; start and results show a symbol
-    dot.textContent = step.id === "start" ? "▶" : step.id === "results" ? "★" : String(i);
+    dot.textContent = step.dot;
     const label = document.createElement("span");
     label.className = "route-label";
-    label.textContent = step.id.indexOf("game") === 0 ? "Level " + i + ": " + step.name : step.name;
+    label.textContent = step.name;
     link.appendChild(dot);
     link.appendChild(label);
     if (score !== null) {
@@ -149,6 +153,21 @@ function renderRoute(bar) {
   bar.innerHTML = "";
   bar.appendChild(list);
   markRouteCurrent(bar, current);
+}
+
+// "Play" in the nav bar opens the first level not played yet
+function updatePlayLink() {
+  const play = document.querySelector('.nav-links a[data-nav="play"]');
+  if (!play) {
+    return;
+  }
+  for (let i = 0; i < GAMES.length; i++) {
+    if (getScore(GAMES[i].id) === null) {
+      play.href = GAMES[i].page;
+      return;
+    }
+  }
+  play.href = GAMES[0].page;
 }
 
 // Highlight one step as "you are here"
@@ -196,6 +215,7 @@ function followSections(bar) {
   }
 }
 
+updatePlayLink();
 const routeBars = document.querySelectorAll(".route");
 for (let i = 0; i < routeBars.length; i++) {
   renderRoute(routeBars[i]);

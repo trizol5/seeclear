@@ -136,3 +136,18 @@ const TOOLBOX = [
   "#f29e4c", "#e2231a", "#7a1f1f", "#00a040",
   "#1b5e20", "#5eb7e8", "#0b3d91", "#4b2c83"
 ];
+
+// ===== "Why it matters" page: Hong Kong statistics =====
+// Design & Content: fill in the numbers from the source below, then open
+// why.html. Until the lists have entries, the page shows an empty chart box.
+// Use the exact figures from the report; do not round them differently.
+const BACKGROUND_STATS = {
+  source: "Census and Statistics Department, Special Topics Report No. 63 (2021), Appendix 4",
+  trendTitle: "People with seeing difficulty, by survey year",
+  // One entry per survey year, e.g. { year: 2020, people: 123400, percent: 2.1 }
+  trend: [],
+  ageTitle: "People with seeing difficulty, by age group",
+  // One entry per age group, percentages should add up to about 100,
+  // e.g. { label: "65 and over", percent: 70.1 }
+  ageGroups: []
+};
