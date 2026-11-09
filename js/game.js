@@ -6,7 +6,7 @@
   open and are gone when it is closed. Nothing is sent anywhere.
 */
 
-// The route through the site: Game 1 -> background -> Game 2 -> Game 3 -> results
+// The route through the site: Game 1 -> Game 2 -> Game 3 -> results
 const GAMES = [
   { id: "game1", name: "Find the MTR line", page: "experience.html" },
   { id: "game2", name: "Contrast sliders", page: "challenge.html#level2" },
