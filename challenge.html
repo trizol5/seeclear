@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Page owner: Programmer B. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <!-- Page owner: Programmer B (Games 2 and 3: Programmer A). Nav bar and footer are shared: keep them identical on all 6 pages. -->
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav-bar" aria-label="Main">
@@ -25,29 +25,82 @@
   </header>
 
   <main id="main">
-    <h1>Challenge</h1>
+    <!-- Games 2 and 3 (built by Programmer A, 2026-11-09). -->
+    <section class="game" id="level2" aria-labelledby="game2Title">
+      <p class="game-step">Level 2 of 3</p>
+      <h1 id="game2Title">Contrast sliders</h1>
+      <p>Move the R, G and B sliders to change the text colour until the contrast level reaches the target. Small changes are often enough.</p>
 
-    <!-- Mode A: guess if a colour pair passes, 10 rounds -->
-    <section class="mode-guess" aria-labelledby="guessTitle">
-      <h2 id="guessTitle">Pass or fail?</h2>
-      <div id="guessGame">
-        <!-- Guessing game goes here -->
+      <div class="slider-game">
+        <div class="slider-picture" id="quizPicture">
+          <p id="quizText"></p>
+        </div>
+        <div class="slider-controls">
+          <p class="contrast-level">Contrast level: <strong id="quizRatio">-</strong>
+            <span class="contrast-target">target <span id="quizTarget">-</span></span></p>
+          <div class="level-bar" aria-hidden="true">
+            <div class="level-fill" id="quizLevelFill"></div>
+            <div class="level-target" id="quizTargetTick"></div>
+          </div>
+          <div class="rgb-slider">
+            <label for="sliderR">R <output id="valueR" for="sliderR"></output></label>
+            <input type="range" id="sliderR" min="0" max="255" step="1">
+          </div>
+          <div class="rgb-slider">
+            <label for="sliderG">G <output id="valueG" for="sliderG"></output></label>
+            <input type="range" id="sliderG" min="0" max="255" step="1">
+          </div>
+          <div class="rgb-slider">
+            <label for="sliderB">B <output id="valueB" for="sliderB"></output></label>
+            <input type="range" id="sliderB" min="0" max="255" step="1">
+          </div>
+          <p id="quizStatus" class="game-message" aria-live="polite"></p>
+          <button type="button" id="quizReset">Reset this colour</button>
+        </div>
       </div>
+
+      <div class="quiz-nav">
+        <button type="button" id="quizPrev">&#9664; Previous</button>
+        <span id="quizCount" class="quiz-count">1 / 8</span>
+        <button type="button" id="quizNext">Next &#9654;</button>
+      </div>
+      <p>Solved: <strong id="quizSolved">0</strong> of <span id="quizTotal">8</span></p>
+      <a class="btn btn-primary" href="#level3">Go to level 3 &darr;</a>
     </section>
 
-    <!-- Mode B: fix a badly coloured poster -->
-    <section class="mode-fix" aria-labelledby="fixTitle">
-      <h2 id="fixTitle">Fix the poster</h2>
-      <div id="fixGame">
-        <!-- Fix challenge goes here -->
-      </div>
-    </section>
+    <section class="game" id="level3" aria-labelledby="game3Title">
+      <p class="game-step">Level 3 of 3</p>
+      <h1 id="game3Title">Fix the poster</h1>
+      <p>Click a part of the poster, then pick a colour from the toolbox. Every block must pass AA before you run out of steps. Changing the background also counts as a step.</p>
 
-    <!-- Badge wall (localStorage) -->
-    <section class="badges" aria-labelledby="badgeTitle">
-      <h2 id="badgeTitle">Your badges</h2>
-      <div id="badgeWall">
-        <!-- Badges go here -->
+      <div class="fix-status">
+        <span>Remaining steps: <strong id="stepsLeft">-</strong></span>
+        <span>Time: <strong id="timer">0:00</strong></span>
+      </div>
+
+      <div class="fix-game">
+        <div class="poster" id="poster"></div>
+        <div class="toolbox">
+          <h2>Toolbox</h2>
+          <p id="selectedPart" class="selected-part">Selected: nothing yet</p>
+          <button type="button" id="selectBackground">Select poster background</button>
+          <div class="swatches" id="toolbox"></div>
+        </div>
+      </div>
+
+      <div class="progress-bar" aria-hidden="true">
+        <div class="progress-pass" id="progressPass"></div>
+        <div class="progress-fail" id="progressFail"></div>
+      </div>
+      <p id="progressText" class="game-message" aria-live="polite"></p>
+
+      <div class="game-actions">
+        <button type="button" id="posterReset">Start again</button>
+      </div>
+
+      <div id="level3Done" class="next-block" hidden>
+        <p id="level3Result"></p>
+        <a class="btn btn-primary" href="about.html#results">See your results &rarr;</a>
       </div>
     </section>
   </main>
@@ -59,6 +112,7 @@
 
   <script src="data/scenes.js"></script>
   <script src="js/color.js"></script>
+  <script src="js/game.js"></script>
   <script src="js/challenge.js"></script>
 </body>
 </html>

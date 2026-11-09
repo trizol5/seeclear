@@ -638,3 +638,450 @@ input[aria-invalid="true"] {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Games (Programmer A) ===== */
+.game-step {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.game-actions,
+.quiz-nav,
+.fix-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: var(--space) 0;
+}
+
+.game-message {
+  min-height: 1.6em;
+  font-weight: 600;
+}
+
+.next-block {
+  margin: var(--space) 0;
+  padding: var(--space);
+  background: var(--color-bg);
+  border: 2px solid #1b6e2a;
+  border-radius: var(--radius);
+}
+
+.next-block[hidden] {
+  display: none;
+}
+
+.vision-row select,
+.fix-row select {
+  min-height: 48px;
+  font: inherit;
+}
+
+.vision-row {
+  margin-bottom: var(--space);
+}
+
+.vision-row select {
+  padding: 8px 12px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
+
+/* Game 1: MTR map */
+.mtr-game {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space);
+  align-items: start;
+}
+
+.mtr-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fafafa;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+}
+
+.mtr-side h2 {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.mtr-slots {
+  list-style: none;
+  margin: 0 0 var(--space);
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.mtr-slots li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #1f1f1f;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.drop-slot {
+  min-height: 52px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.drop-slot:empty::before {
+  content: "Drop here";
+  padding-left: 8px;
+  color: var(--color-text-muted);
+}
+
+.drop-slot.drop-target {
+  border-style: solid;
+  border-color: var(--color-link);
+  background: #e8f0fb;
+}
+
+.slot-mark {
+  min-width: 6.5em;
+  font-weight: 700;
+}
+
+.mtr-slots li.correct .drop-slot {
+  border: 2px solid #1b6e2a;
+}
+
+.mtr-slots li.correct .slot-mark {
+  color: #1b6e2a;
+}
+
+.mtr-slots li.wrong .drop-slot {
+  border: 2px solid #b3261e;
+}
+
+.mtr-slots li.wrong .slot-mark {
+  color: #b3261e;
+}
+
+.chip-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 60px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
+
+.line-chip {
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 12px;
+  font-weight: 600;
+  touch-action: none;
+  user-select: none;
+}
+
+.drop-slot .line-chip {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.chip-swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid #1f1f1f;
+}
+
+.line-chip.selected {
+  outline: 3px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+.line-chip.dragging {
+  position: relative;
+  z-index: 10;
+  cursor: grabbing;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.attempt-list {
+  margin: 0;
+  padding-left: 1.4em;
+  color: var(--color-text-muted);
+}
+
+/* Game 2: contrast sliders */
+.slider-game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space);
+  align-items: start;
+}
+
+.slider-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: var(--space);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.slider-picture p {
+  margin: 0;
+}
+
+.contrast-level {
+  margin: 0 0 8px;
+}
+
+.contrast-target {
+  color: var(--color-text-muted);
+  margin-left: 8px;
+}
+
+.level-bar {
+  position: relative;
+  height: 16px;
+  margin-bottom: var(--space);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+}
+
+.level-fill {
+  height: 100%;
+  width: 0;
+  background: #b3261e;
+  border-radius: 8px;
+  transition: width 0.15s;
+}
+
+.level-fill.reached {
+  background: #1b6e2a;
+}
+
+.level-target {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 3px;
+  background: var(--color-text);
+}
+
+.rgb-slider label {
+  display: flex;
+  justify-content: space-between;
+  max-width: 400px;
+}
+
+.rgb-slider output {
+  font-family: var(--font-mono);
+}
+
+.quiz-count {
+  font-weight: 700;
+  min-width: 4em;
+  text-align: center;
+}
+
+/* Game 3: fix the poster */
+.fix-game {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space);
+  align-items: start;
+}
+
+.poster {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 360px;
+  padding: calc(var(--space) * 1.5);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+}
+
+.poster.selected {
+  outline: 4px solid var(--color-link);
+  outline-offset: 3px;
+}
+
+.poster-block {
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  border: 2px dashed transparent;
+  text-align: left;
+  font-weight: 600;
+}
+
+.poster-block:hover {
+  background: transparent;
+  border-color: currentColor;
+}
+
+.poster-block.selected {
+  border: 3px solid var(--color-link);
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.block-mark {
+  flex: none;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.block-mark.pass {
+  color: #1b6e2a;
+}
+
+.block-mark.fail {
+  color: #b3261e;
+}
+
+.toolbox h2 {
+  margin-top: 0;
+}
+
+.selected-part {
+  font-weight: 600;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: var(--space);
+}
+
+.swatch {
+  min-height: 48px;
+  padding: 0;
+  border: 2px solid var(--color-border-strong);
+}
+
+.swatch:hover {
+  border-color: var(--color-text);
+}
+
+.progress-bar {
+  display: flex;
+  height: 32px;
+  margin-top: var(--space);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.progress-pass,
+.progress-fail {
+  flex: none;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: width 0.3s;
+}
+
+.progress-pass {
+  background: #1b6e2a;
+}
+
+.progress-fail {
+  background: #b3261e;
+}
+
+/* Results (About page) */
+.result-steps {
+  list-style: none;
+  margin: 0 0 var(--space);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space);
+}
+
+.result-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space);
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.result-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-text);
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.result-score {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.result-step.not-played .result-score {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+.result-level {
+  font-size: 1.4rem;
+}
+
+.result-level strong {
+  font-size: 2rem;
+}
+
+@media (max-width: 640px) {
+  .mtr-game,
+  .slider-game,
+  .fix-game,
+  .result-steps {
+    grid-template-columns: 1fr;
+  }
+}

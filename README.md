@@ -2,6 +2,8 @@
 
 A front-end-only website about accessible colour: see how people with colour vision deficiency see, then check and fix your own colours. CS1102 group project, SDG 11 (with SDG 3).
 
+The site is a route of three games: Home → Level 1 "Find the MTR line" (Experience) → background (Learn) → Level 2 "Contrast sliders" and Level 3 "Fix the poster" (Challenge) → results, tips and links (About).
+
 Plain HTML / CSS / JavaScript. No database, no backend, no build step. Hosted on GitHub Pages.
 
 ## Run locally
@@ -13,24 +15,26 @@ Open the folder in VS Code and start the **Live Server** extension (right-click 
 ```
 seeclear/
 ├── index.html          Home                      (Programmer B)
-├── experience.html     Experience                (Programmer B)
+├── experience.html     Experience + Game 1       (Programmer B; Game 1: A)
 ├── learn.html          Learn                     (Programmer B)
 ├── checker.html        Checker                   (Programmer A)
-├── challenge.html      Challenge                 (Programmer B)
-├── about.html          About                     (skeleton: A, text: Design & Content)
+├── challenge.html      Games 2 and 3             (Programmer B; games: A)
+├── about.html          Results + About           (skeleton and results: A, text: Design & Content)
 ├── css/
 │   └── style.css       Shared styles             (Programmer A)
 ├── js/
 │   ├── color.js        Shared colour functions   (Programmer A)
-│   ├── filters.js      Colour-blindness filters  (Programmer B)
+│   ├── filters.js      Colour-blindness filters  (first version: A; split slider: B)
+│   ├── game.js         Shared game scores        (Programmer A)
 │   ├── checker.js                                (Programmer A)
-│   ├── experience.js                             (Programmer B)
+│   ├── experience.js   Game 1 (A) + scenes (B)
 │   ├── learn.js                                  (Programmer B)
-│   └── challenge.js                              (Programmer B)
+│   ├── challenge.js    Games 2 and 3             (Programmer A)
+│   └── ending.js       Results on About page     (Programmer A)
 ├── docs/
 │   └── genai-log-programmer-a.md  GenAI usage record, Programmer A
 ├── data/
-│   └── scenes.js       Scenes and quiz data      (format: A, content: Design & Content)
+│   └── scenes.js       Scenes and game data      (format: A, content: Design & Content)
 ├── img/                Scene images, copyright-free only
 └── tests/
     ├── color.test.html Self-test for color.js: open in a browser (Programmer A)

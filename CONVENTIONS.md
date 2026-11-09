@@ -18,7 +18,7 @@
 ## HTML
 - Every page: `<!DOCTYPE html>`, `<html lang="en">`, `<meta charset="UTF-8">`, viewport meta.
 - Same nav bar and footer on all 6 pages; copy them exactly from `index.html`.
-- Scripts at the end of `<body>`, in this order: `data/scenes.js` (if needed), `js/color.js`, `js/filters.js` (if needed), then the page's own JS.
+- Scripts at the end of `<body>`, in this order: `data/scenes.js` (if needed), `js/color.js`, `js/filters.js` (if needed), `js/game.js` (game pages), then the page's own JS.
 - Buttons and inputs get a visible label or `aria-label`.
 
 ## CSS

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Page owner: Programmer B. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <!-- Page owner: Programmer B (Game 1: Programmer A). Nav bar and footer are shared: keep them identical on all 6 pages. -->
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav-bar" aria-label="Main">
@@ -25,33 +25,44 @@
   </header>
 
   <main id="main">
-    <h1>Experience</h1>
-    <p>Pick a scene and a vision mode to see how others see it.</p>
+    <!-- Game 1 (built by Programmer A, 2026-11-09). Programmer B: the scene explorer can go below it. -->
+    <section class="game" aria-labelledby="game1Title">
+      <p class="game-step">Level 1 of 3</p>
+      <h1 id="game1Title">Find the MTR line</h1>
+      <p>Hong Kong's MTR lines are told apart mainly by colour. Drag each line name onto its number on the map, then press <strong>Check</strong>. You can also click a name, then click a number.</p>
 
-    <!-- Scene picker: MTR sign, bus stop, cha chaan teng menu, course web page -->
-    <section class="scene-picker" aria-labelledby="sceneTitle">
-      <h2 id="sceneTitle">Scenes</h2>
-      <div id="sceneList">
-        <!-- Scene buttons go here (from data/scenes.js) -->
+      <div class="vision-row">
+        <label for="visionMode">See the map with</label>
+        <select id="visionMode"></select>
       </div>
-    </section>
 
-    <!-- Vision mode and severity -->
-    <section class="vision-controls" aria-labelledby="modeTitle">
-      <h2 id="modeTitle">Vision mode</h2>
-      <div id="modeList">
-        <!-- Protanopia / Deuteranopia / Tritanopia / Achromatopsia / Presbyopia -->
+      <div class="mtr-game" id="mtrGame">
+        <div class="mtr-map">
+          <svg id="mtrMap" role="img" aria-labelledby="mtrMapTitle">
+            <title id="mtrMapTitle">Simplified MTR map with six numbered lines, not to scale</title>
+          </svg>
+        </div>
+        <div class="mtr-side">
+          <h2>Numbers on the map</h2>
+          <ol class="mtr-slots" id="mtrSlots"></ol>
+          <h2>Line names</h2>
+          <div class="chip-tray" id="chipTray" aria-label="Line names to place"></div>
+        </div>
       </div>
-      <label for="severity">Severity</label>
-      <input type="range" id="severity" min="0" max="100" value="100">
-    </section>
 
-    <!-- Scene view with split slider and one-line caption -->
-    <section class="scene-view">
-      <div id="sceneCompare" class="split-compare">
-        <!-- Split slider goes here (filters.js) -->
+      <div class="game-actions">
+        <button type="button" id="checkBtn" class="btn-primary">Check</button>
+        <button type="button" id="resetBtn">Start again</button>
       </div>
-      <p id="sceneCaption"></p>
+      <p id="gameMessage" class="game-message" aria-live="polite"></p>
+
+      <div id="nextBlock" class="next-block" hidden>
+        <p><strong>Well done!</strong> Now switch the view back to normal vision and see how different it looks.</p>
+        <a class="btn btn-primary" href="learn.html">Next: why it matters &rarr;</a>
+      </div>
+
+      <h2>Attempt history</h2>
+      <ol id="attemptList" class="attempt-list"></ol>
     </section>
   </main>
 
@@ -63,6 +74,7 @@
   <script src="data/scenes.js"></script>
   <script src="js/color.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/game.js"></script>
   <script src="js/experience.js"></script>
 </body>
 </html>

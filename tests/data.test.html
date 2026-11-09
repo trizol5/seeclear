@@ -89,10 +89,29 @@
       }
     }
 
-    // QUIZ
-    report(QUIZ.length === 10, "QUIZ has " + QUIZ.length + " question(s) (target: 10)");
+    // MTR_GAME (Game 1)
+    report(MTR_GAME.lines.length >= 4, "MTR_GAME has " + MTR_GAME.lines.length + " line(s) (target: 4-8)");
+    checkIds("MTR_GAME lines", MTR_GAME.lines);
+    for (let i = 0; i < MTR_GAME.lines.length; i++) {
+      const line = MTR_GAME.lines[i];
+      const where = "MTR line \"" + line.id + "\"";
+      checkText(where + " name", line.name);
+      checkColour(where + " color", line.color);
+      if (!Array.isArray(line.points) || line.points.length < 2) {
+        report(false, where + ": points needs at least 2 [x, y] pairs");
+        continue;
+      }
+      for (let j = 0; j < line.points.length; j++) {
+        const pt = line.points[j];
+        if (!Array.isArray(pt) || pt[0] < 0 || pt[0] > MTR_GAME.width || pt[1] < 0 || pt[1] > MTR_GAME.height) {
+          report(false, where + " point " + (j + 1) + ": must be [x, y] inside the map, got " + JSON.stringify(pt));
+        }
+      }
+    }
+
+    // QUIZ (Game 2)
+    report(QUIZ.length === 8, "QUIZ has " + QUIZ.length + " question(s) (target: 8)");
     checkIds("QUIZ", QUIZ);
-    let passCount = 0;
     for (let i = 0; i < QUIZ.length; i++) {
       const q = QUIZ[i];
       const where = "question \"" + q.id + "\"";
@@ -102,12 +121,18 @@
       if (typeof q.largeText !== "boolean") {
         report(false, where + ": largeText must be true or false");
       }
-      const ratio = contrast(q.color, q.background);
-      if (ratio !== null && rating(ratio, q.largeText) !== "Fail") {
-        passCount++;
+      if ([3, 4.5, 7].indexOf(q.target) === -1) {
+        report(false, where + ": target must be 3, 4.5 or 7, got " + JSON.stringify(q.target));
+      }
+      const start = contrast(q.color, q.background);
+      const best = Math.max(contrast("#000000", q.background) || 0, contrast("#ffffff", q.background) || 0);
+      if (start !== null && start >= q.target) {
+        report(false, where + ": already reaches the target at the start (" + formatRatio(start) + ":1)");
+      }
+      if (best < q.target) {
+        report(false, where + ": target " + q.target + " cannot be reached on this background (best " + formatRatio(best) + ":1)");
       }
     }
-    report(true, "QUIZ answers: " + passCount + " pass, " + (QUIZ.length - passCount) + " fail (aim for a mix)");
 
     // FIX_POSTERS
     report(FIX_POSTERS.length >= 1, "FIX_POSTERS has " + FIX_POSTERS.length + " poster(s) (target: 1-2)");
@@ -117,6 +142,9 @@
       const where = "poster \"" + poster.id + "\"";
       checkText(where + " title", poster.title);
       checkColour(where + " background", poster.background);
+      if (typeof poster.maxSteps !== "number" || poster.maxSteps < 1) {
+        report(false, where + ": maxSteps must be a number, 1 or more");
+      }
       checkIds(where + " blocks", poster.blocks);
       for (let j = 0; j < poster.blocks.length; j++) {
         const block = poster.blocks[j];
@@ -127,6 +155,12 @@
           report(false, bw + ": largeText must be true or false");
         }
       }
+    }
+
+    // TOOLBOX (Game 3)
+    report(TOOLBOX.length >= 4, "TOOLBOX has " + TOOLBOX.length + " colour(s)");
+    for (let i = 0; i < TOOLBOX.length; i++) {
+      checkColour("TOOLBOX[" + i + "]", TOOLBOX[i]);
     }
 
     document.getElementById("summary").textContent = problems === 0
