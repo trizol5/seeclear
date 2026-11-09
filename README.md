@@ -14,7 +14,7 @@ Open the folder in VS Code and start the **Live Server** extension (right-click 
 
 ```
 seeclear/
-├── index.html          Home                      (Programmer B)
+├── index.html          Home (from the design draft) (Programmer B; current version: A)
 ├── experience.html     Experience + Game 1       (Programmer B; Game 1: A)
 ├── checker.html        Checker                   (Programmer A)
 ├── challenge.html      Games 2 and 3             (Programmer B; games: A)
@@ -33,7 +33,7 @@ seeclear/
 │   └── genai-log-programmer-a.md  GenAI usage record, Programmer A
 ├── data/
 │   └── scenes.js       Scenes and game data      (format: A, content: Design & Content)
-├── img/                Scene images, copyright-free only
+├── img/                Images, copyright-free only (logo.svg: simple version, Design & Content can replace)
 └── tests/
     ├── color.test.html Self-test for color.js: open in a browser (Programmer A)
     └── data.test.html  Format check for data/scenes.js: open after editing it

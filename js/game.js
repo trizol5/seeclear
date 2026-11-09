@@ -8,9 +8,18 @@
 
 // The route through the site: Game 1 -> Game 2 -> Game 3 -> results
 const GAMES = [
-  { id: "game1", name: "Find the MTR line", page: "experience.html" },
-  { id: "game2", name: "Contrast sliders", page: "challenge.html#level2" },
-  { id: "game3", name: "Fix the poster", page: "challenge.html#level3" }
+  {
+    id: "game1", name: "Find the MTR line", page: "experience.html",
+    summary: "Match MTR lines on a map seen through colour-blind eyes."
+  },
+  {
+    id: "game2", name: "Contrast sliders", page: "challenge.html#level2",
+    summary: "Slide R, G and B until the text is easy to read."
+  },
+  {
+    id: "game3", name: "Fix the poster", page: "challenge.html#level3",
+    summary: "Fix a campus poster with a few colour changes."
+  }
 ];
 
 const SCORE_KEY = "seeclear-scores";
@@ -33,6 +42,9 @@ function saveScore(gameId, percent) {
     sessionStorage.setItem(SCORE_KEY, JSON.stringify(scores));
   } catch (error) {
     // Private mode or blocked storage: the game still works, the score just isn't kept
+  }
+  if (typeof refreshRoute === "function") {
+    refreshRoute();
   }
 }
 
@@ -75,4 +87,117 @@ function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const rest = seconds % 60;
   return minutes + ":" + (rest < 10 ? "0" : "") + rest;
+}
+
+// ===== Route bar: Start - 1 - 2 - 3 - Results, joined by a line =====
+// Put <nav class="route" id="routeBar" data-current="game1"> on a page and it
+// is filled in here. data-current: "start", "game1", "game2", "game3" or "results".
+// Add data-detail="true" for the large version with a summary under each game.
+function routeSteps() {
+  const steps = [{ id: "start", name: "Start", page: "index.html" }];
+  for (let i = 0; i < GAMES.length; i++) {
+    steps.push(GAMES[i]);
+  }
+  steps.push({ id: "results", name: "Results", page: "about.html#results" });
+  return steps;
+}
+
+function renderRoute(bar) {
+  const current = bar.dataset.current;
+  const detail = bar.dataset.detail === "true";
+  const steps = routeSteps();
+  const list = document.createElement("ol");
+  list.className = "route-list" + (detail ? " route-detail" : "");
+
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const score = getScore(step.id);
+    const item = document.createElement("li");
+    item.className = "route-step";
+    item.dataset.step = step.id;
+    if (score !== null) {
+      item.classList.add("done");
+    }
+
+    const link = document.createElement("a");
+    link.href = step.page;
+    const dot = document.createElement("span");
+    dot.className = "route-dot";
+    dot.setAttribute("aria-hidden", "true");
+    // Games show their number; start and results show a symbol
+    dot.textContent = step.id === "start" ? "▶" : step.id === "results" ? "★" : String(i);
+    const label = document.createElement("span");
+    label.className = "route-label";
+    label.textContent = step.id.indexOf("game") === 0 ? "Level " + i + ": " + step.name : step.name;
+    link.appendChild(dot);
+    link.appendChild(label);
+    if (score !== null) {
+      const scoreEl = document.createElement("span");
+      scoreEl.className = "route-score";
+      scoreEl.textContent = "✓ " + score + "%";
+      link.appendChild(scoreEl);
+    }
+    if (detail && step.summary) {
+      const summary = document.createElement("span");
+      summary.className = "route-summary";
+      summary.textContent = step.summary;
+      link.appendChild(summary);
+    }
+    item.appendChild(link);
+    list.appendChild(item);
+  }
+  bar.innerHTML = "";
+  bar.appendChild(list);
+  markRouteCurrent(bar, current);
+}
+
+// Highlight one step as "you are here"
+function markRouteCurrent(bar, stepId) {
+  const items = bar.querySelectorAll(".route-step");
+  for (let i = 0; i < items.length; i++) {
+    const isCurrent = items[i].dataset.step === stepId;
+    items[i].classList.toggle("current", isCurrent);
+    const link = items[i].querySelector("a");
+    if (isCurrent) {
+      link.setAttribute("aria-current", "step");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  }
+}
+
+// Redraw the route bar(s), e.g. after a score is saved
+function refreshRoute() {
+  const bars = document.querySelectorAll(".route");
+  for (let i = 0; i < bars.length; i++) {
+    const current = bars[i].querySelector(".route-step.current");
+    if (current) {
+      bars[i].dataset.current = current.dataset.step;
+    }
+    renderRoute(bars[i]);
+  }
+}
+
+// On a page with several games (Challenge), follow the one being looked at
+function followSections(bar) {
+  const sections = document.querySelectorAll("section[data-route-step]");
+  if (sections.length < 2 || !("IntersectionObserver" in window)) {
+    return;
+  }
+  const observer = new IntersectionObserver(function (entries) {
+    for (let i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) {
+        markRouteCurrent(bar, entries[i].target.dataset.routeStep);
+      }
+    }
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  for (let i = 0; i < sections.length; i++) {
+    observer.observe(sections[i]);
+  }
+}
+
+const routeBars = document.querySelectorAll(".route");
+for (let i = 0; i < routeBars.length; i++) {
+  renderRoute(routeBars[i]);
+  followSections(routeBars[i]);
 }

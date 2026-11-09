@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Page owner: Programmer B. Nav bar and footer are shared: keep them identical on all 6 pages. -->
+  <!-- Page owner: Programmer B (current version: Programmer A, from the design draft). Nav bar and footer are shared: keep them identical on all 6 pages. -->
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav-bar" aria-label="Main">
-      <a class="logo" href="index.html">SeeClear</a>
+      <a class="logo" href="index.html"><img src="img/logo.svg" alt="" width="36" height="36">SeeClear</a>
       <ul class="nav-links">
         <li><a href="index.html" class="active" aria-current="page">Home</a></li>
         <li><a href="experience.html">Experience</a></li>
@@ -24,28 +24,29 @@
   </header>
 
   <main id="main">
-    <!-- Hero: campus poster with split slider, normal vision on the left, deuteranopia on the right -->
-    <section class="hero" aria-labelledby="heroTitle">
-      <h1 id="heroTitle">See your design through other eyes</h1>
-      <p>Drag the line to compare normal vision with colour vision deficiency.</p>
-      <div id="heroCompare" class="split-compare">
-        <!-- Split slider goes here (filters.js) -->
+    <!-- Home page, following the group's design draft (panel 1). Built by Programmer A, 2026-11-09. -->
+    <section class="home-hero" aria-labelledby="homeTitle">
+      <div class="home-intro">
+        <div class="home-brand">
+          <img src="img/logo.svg" alt="" width="72" height="72">
+          <h1 id="homeTitle">SeeClear</h1>
+        </div>
+        <p class="home-tagline">See colour the way others do, then design for everyone.</p>
+        <p>Many people see colour differently: people with colour vision deficiency, older adults, or anyone reading a phone in bright sunlight. In three short games you will see Hong Kong through their eyes, then fix colours so everyone can read them.</p>
+      </div>
+      <div class="ready-box">
+        <p class="ready-title">Ready?</p>
+        <p>3 games &middot; about 5 minutes &middot; no sign-up</p>
+        <a class="btn btn-primary btn-go" href="experience.html">GO</a>
       </div>
     </section>
 
-    <!-- Key numbers with sources (content from Design & Content) -->
-    <section class="stats" aria-labelledby="statsTitle">
-      <h2 id="statsTitle">Why it matters</h2>
-      <div class="stat-list">
-        <!-- 2-3 stat cards go here -->
-      </div>
+    <section class="home-route-section" aria-labelledby="routeTitle">
+      <h2 id="routeTitle">Your route</h2>
+      <nav class="route" id="routeBar" aria-label="Game route" data-current="start" data-detail="true"></nav>
     </section>
 
-    <!-- Calls to action -->
-    <section class="cta">
-      <a class="btn btn-primary" href="experience.html">See through their eyes &rarr;</a>
-      <a class="btn" href="checker.html">Check my colours &rarr;</a>
-    </section>
+    <p class="home-checker">Just want to check two colours? <a href="checker.html">Open the colour checker</a>.</p>
   </main>
 
   <footer class="site-footer">
@@ -53,7 +54,6 @@
     <p>Supporting <a href="about.html#sdg">SDG 11 and SDG 3</a> &middot; <a href="about.html">About us</a></p>
   </footer>
 
-  <script src="js/color.js"></script>
-  <script src="js/filters.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>

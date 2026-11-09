@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- SeeClear logo, simple version (based on the swirl in the design draft). Design & Content can replace this file. -->
+  <circle cx="32" cy="32" r="30" fill="#0b57b0"/>
+  <path d="M32 32 a3 3 0 0 1 6 0 a6 6 0 0 1 -12 0 a9 9 0 0 1 18 0 a12 12 0 0 1 -24 0 a15 15 0 0 1 30 0 a18 18 0 0 1 -18 18"
+        fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -12,7 +12,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav-bar" aria-label="Main">
-      <a class="logo" href="index.html">SeeClear</a>
+      <a class="logo" href="index.html"><img src="img/logo.svg" alt="" width="36" height="36">SeeClear</a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="experience.html">Experience</a></li>
@@ -24,8 +24,10 @@
   </header>
 
   <main id="main">
+    <nav class="route" id="routeBar" aria-label="Game route" data-current="game2"></nav>
+
     <!-- Games 2 and 3 (built by Programmer A, 2026-11-09). -->
-    <section class="game" id="level2" aria-labelledby="game2Title">
+    <section class="game" id="level2" data-route-step="game2" aria-labelledby="game2Title">
       <p class="game-step">Level 2 of 3</p>
       <h1 id="game2Title">Contrast sliders</h1>
       <p>Move the R, G and B sliders to change the text colour until the contrast level reaches the target. Small changes are often enough.</p>
@@ -67,7 +69,7 @@
       <a class="btn btn-primary" href="#level3">Go to level 3 &darr;</a>
     </section>
 
-    <section class="game" id="level3" aria-labelledby="game3Title">
+    <section class="game" id="level3" data-route-step="game3" aria-labelledby="game3Title">
       <p class="game-step">Level 3 of 3</p>
       <h1 id="game3Title">Fix the poster</h1>
       <p>Click a part of the poster, then pick a colour from the toolbox. Every block must pass AA before you run out of steps. Changing the background also counts as a step.</p>
