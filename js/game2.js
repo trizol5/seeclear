@@ -29,20 +29,28 @@ function update() {
     ratio.textContent = `Contrast Ratio: ${ratioValue}:1`;
     questionNumber.textContent = `Question ${current + 1} / ${question.length}`;
     
-
+    let newlySolved = false;
     if (ratioValue >= question[current].target) {
         statusText.textContent = "✔ Pass";
-        solved[current] = true;
+        if (!solved[current]) {
+            solved[current] = true;
+            newlySolved = true;
+        }
     } else {
         statusText.textContent = `✖ Too low, need ${question[current].target}:1 or higher`;
     }
     const solvedCount = solved.filter(v => v).length;
+    
     const score = Math.round((solvedCount / question.length) * 100);
+    if (newlySolved) {
+        localStorage.setItem("game2", score);
+    }
     solvedNumber.textContent = `Solved: ${solvedCount} / ${solved.length}`;
     if (solved.every(v => v)) {
         nextBlock.hidden = false;
     }
-    localStorage.setItem("game2", score);
+
+    
 }
 
 function showQuestion() {

@@ -28,3 +28,27 @@
     padding: 10px;
     font-size: 20px;
 }
+
+#poster {
+    width: 200px;
+    min-height: 500px;
+    margin: 10px;
+    padding: 20px;
+}
+
+#palette {
+    margin: 10px;
+}
+
+#palette .button{
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+#poster .selected{
+    background-color: transparent;
+    outline: 3px dashed white;
+    outline-color: transparent;
+}
