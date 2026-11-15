@@ -56,7 +56,6 @@
 #poster .selected {
     background-color: transparent;
     outline: 3px dashed white;
-    outline-color: transparent;
 }
 
 .skip-link {
@@ -75,4 +74,28 @@
 canvas{
     max-width: 100%;
     cursor: crosshair;
+}
+
+#suggestion-swatch {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    margin-left: 5px;
+}
+footer{
+    font-size: 14px;
+    text-align: center;
+}
+
+#drop-zone{
+    border: 2px dashed #767676;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+}
+
+#drop-zone.dragover{
+    border-color: #000;
+    background-color: #f0f0f0;
 }
