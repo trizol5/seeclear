@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Checker - SeeClear</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+        <h1>SeeClear</h1>
+        <nav class="site-nav">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="game1.html">Game1</a></li>
+                <li><a href="background.html">Why it matters</a></li>
+                <li><a href="game2.html">Game2</a></li>
+                <li><a href="game3.html">Game3</a></li>
+                <li><a href="ending.html">Ending</a></li>
+                <li><a href="checker.html">Checker</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="main">
+        <h2>Colour Contrast Checker</h2>
+        <p>Pick a text colour and a background colour for your poster or slides.</p>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" value="#777777">
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" value="#ffffff">
+
+        <label for="image-upload">Or upload an image to check the contrast of text on it.</label>
+        <input type="file" accept="image/*" id="image-upload">
+        <p>Choose what to pick, then click on the image.</p>
+        <label for="pick-text">Text</label>
+        <input type="radio" id="pick-text" value="text" name = "color-type" checked>
+        <label for="pick-background">Background</label>
+        <input type="radio" id="pick-background" value="background" name = "color-type">
+        <canvas id="image-canvas"></canvas>
+        <div id="preview">
+            <p id="large-text">This is large text</p>
+            <p>This is normal text</p>
+        </div>
+        <p id="contrast-ratio"></p>
+        <ul id="results">
+            <li id="aa-large"></li>
+            <li id="aa-normal"></li>
+            <li id="aaa"></li>
+        </ul>
+    </main>
+    <script src="js/color.js"></script>
+    <script src="js/checker.js"></script>
+</body>
+
+</html>
