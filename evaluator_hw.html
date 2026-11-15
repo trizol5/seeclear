@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<head>
+    <title>Color Accessibility Evaluater</title>
+    <script src="pdfjs/pdf.min.js"></script>
+    <script>
+        function evaluationMain(backgroundRGB=[0,0,0],textRGB=[0,0,0],gBG1=[0,0,0],gBG2=[0,0,0],gTXT1=[0,0,0],gTXT2=[0,0,0]){
+            document.getElementById("gradientChoice").bu;
+            var result = [];
+            var e, s = "";
+            if (gradientVariety == 0){
+                solidColorMain(backgroundRGB,textRGB);
+                e += "";
+                s += "";
+            }else if(gradientVariety == 1){
+                gradientBgColorMain(textRGB,gBG1,gBG2);
+                e += "";
+                s += "";
+            }else{
+                gradientTextColorMain(backgroundRGB,gTXT1,gTXT2);
+                e += "";
+                s += "";
+            }
+            document.getElementById("result").innerHTML = s;
+            return 0;
+        }
+        function solidColorMain(backgroundRGB=[0,0,0],textRGB=[0,0,0]){
+            var result, linearizedRGB_list = [];
+            var cr;
+            result = RGBtoCR(backgroundRGB,textRGB);
+            cr = result[0];
+            linearizedRGB_list = result[1];
+            if (cr >= 4.5)
+                return [[0,0],cr];
+            else if (cr>=3.0)
+                return [[CRtoRGB(linearizedRGB_list),0],cr];
+            else
+                return [[CRtoRGB(linearizedRGB_list),CRtoRGB(linearizedRGB_list,3)],cr];
+
+        }
+        function gradientBgColorMain(textRGB=[0,0,0],gBG1=[0,0,0],gBG2=[0,0,0]){
+            var avgBG = gradientAverage(gBG1,gBG2);
+            return [solidColorMain(avgBG,textRGB),solidColorMain(gBG1,textRGB),solidColorMain(gBG2,textRGB)];
+        }
+        function gradientTextColorMain(backgroundRGB=[0,0,0],gTXT1=[0,0,0],gTXT2=[0,0,0]){
+            var avgTXT = gradientAverage(gTXT1,gTXT2);
+            return [solidColorMain(backgroundRGB,avgTXT),solidColorMain(backgroundRGB,gTXT1),solidColorMain(backgroundRGB,gTXT2)];
+        }
+        function gradientAverage(color_1=[0,0,0],color_2=[0,0,0]){
+            var avgBG = [];
+            for (var i = 0; i<3; i++){
+                avgBG[i] = (gBG1[i]+gBG2[i])/2;
+            }
+            return avgBG;
+        }
+        function normalization(originalRGB=[0,0,0]){
+            var normalizedRGB = [];
+            for (var i=0;i<3;i++){
+                normalizedRGB[i] = originalRGB[i]/255;
+            }
+            return normalizedRGB;
+        }
+        function linearization(normalizedRGB=[0,0,0]){
+            var linearizedRGB = [];
+            for (var i = 0; i<3; i++){
+                if (normalizedRGB[i]<=0.04045)
+                    linearizedRGB[i] = normalizedRGB[i]/12.92;
+                else
+                    linearizedRGB[i] = Math.pow((normalizedRGB[i]+0.055)/1.055,2.4);
+            }
+            return linearizedRGB;
+        }
+        function average(linearizedRGB=[0,0,0]){
+            var averagedRGB = 0.2126*linearizedRGB[0] + 0.7152*linearization[1] + 0.0722*linearizedRGB[2];
+            return averagedRGB;
+        }
+        function contrastRatio(averagedRGB_1=0, averagedRGB_2=0){
+            var cR = 0;
+            if (averagedRGB_1 > averagedRGB_2)
+                cR = (averagedRGB_1 + 0.05)/(averagedRGB_2 + 0.05);
+            else
+                cR = (averagedRGB_2 + 0.05)/(averagedRGB_1 + 0.05);
+            return cR;
+        }
+        function RGBtoCR(originalRGB_1=[0,0,0],originalRGB_2=[0,0,0]){
+            var linearizedRGB_1, linearizedRGB_2 = [];
+            linearizedRGB_1 = average(linearization(normalization(originalRGB_1)));
+            linearizedRGB_2 = average(linearization(normalization(originalRGB_2)));
+            return [contrastRatio(linearizedRGB_1,linearizedRGB_2),[linearizedRGB_1,linearizedRGB_2]];
+        }
+        function CRtoRGB(linearizedRGB_list,targetCR=4.5){
+            //will return one possible color for each two colors, so input the list of linearized RGB.
+            var k, newOriginal = [];
+            k[0] = (4.5*(l2 + 0.05) - 0.05)/linearizedRGB_list[0];
+            k[1] = ((l1+0.05)/4.5 - 0.05)/linearizedRGB_list[1];
+            for (var i=0;i<2;i++){
+                newOriginal[i]=(reverseLinearization(newLineaizedRGB(k[i],linearizedRGB_list[i])));
+            }
+            return newOriginal;
+        }
+        function newLineaizedRGB(k,linearizedRGB){
+            return [k*linearizedRGB[0],k*linearizedRGB[1],k*linearizedRGB[2]]
+        }
+        function reverseLinearization(newLineaizedRGB){
+            var newNormlized = [];
+            for (var i=0;i<3;i++){
+                if(newLineaizedRGB[i]<=0.0031308)
+                    newNormlized[i] = newLineaizedRGB[i]*12.92;
+                else
+                    newNormlized[i] = 1.055*Math.pow(newLineaizedRGB[i],1/2.4) - 0.055;
+            }
+            return newNormlized;
+        }
+        function reverseNormalization(newNormlized){
+            var newOriginal = [];
+            for (var i=0;i<3;i++){
+                newOriginal[i] = Math.round(newNormlized[i]*255);
+            }
+            return newOriginal;
+        }
+        function evaluation(cr){
+            if (cr >= 4.5)
+                return "All";
+            else if (cr >= 3)
+                return "Large";
+            else
+                return "Either";
+        }
+        function suggestionTextGeneration(evl, cr, l1, l2, rl, gl, bl){
+            //Don't use Euclidean distance, use the contrast ratio instead to reflect the real visual sense.
+            if (evl == "All")
+                return 0;
+            else{
+                nLn = newLn(cr,l1,l2);
+                rA = reverseAverage(rl,gl,bl,newLn[0],newLn[1]);
+                var rL = [[0,0,0],[0,0,0]];
+                for (var i = 0; i < 2; i++){
+                    for (var j = 0; j < 3; j++){
+                        rL[i][j] = reverseLinearization(reverseAverage[i][j]);
+                    }
+                }
+                var rN = [[0,0,0],[0,0,0]];
+                rN[0] = reverseNormalization(rL[0][0],rL[0][1],rL[0][2]);
+                rN[1] = reverseNormalization(rL[1][0],rL[1][1],rL[1][2]);
+                return rN;
+            }
+        }
+        function showPanel(){
+            document.getElementById("choose").hidden = false;
+            document.getElementById("withoutUpload").hidden = true;
+        }
+        function hidePanel(){
+            document.getElementById("choose").hidden = true;
+            document.getElementById("withoutUpload").hidden = false;
+        }
+    </script>
+    <style>
+        .footer {
+            font-size: 12px;
+            color: #272727;
+            /*font-style: italic*/;
+        }
+       .intro {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #upload, #choose {
+            border: 2px dashed;
+        }
+        .claim {
+            font-style: italic;
+            color:burlywood;
+        }
+        .tutorial {
+            background-color: #73ff00;
+        }
+        .yellow_bg {
+            background-color: #ffff005f;
+        }
+        .copyright {
+            height: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>Color Accessibility Evaluator</h1>
+        <p>This module aims to provide a checking and evaluation service for images and PDFs created by students and staff at CityUHK, to ensure the inclusiveness of text and background colours.</p>
+        <span class="tutorial">5 steps to use:</span>
+        <ol>
+            <li>Upload.</li>
+            <li>Select color.</li>
+            <li>If you don't want to upload your document, you can also directly choose the color below the upload region.</li>
+            <li>Click "Start Evaluation" button.</li>
+            <li>Get the result and suggestions.</li>
+        </ol>
+        <br>
+    </div>
+    <div id="upload">
+        <h3>Drag and drop your PDF or image here.</h3>
+        <!-- 隐藏的文件选择框，用于点击上传区域时选择文件 -->
+        <input type="file" id="fileInput" accept="image/*,application/pdf" style="display:none;">
+        <!-- 本地上传按钮：点击后打开系统文件选择框 -->
+        <button type="button" id="browseBtn">Select a file through System File Explorer</button>
+        <!-- 粘贴提示：支持 Ctrl+V 从剪贴板粘贴图片 -->
+        <p id="pasteHint">Or paste from clipboard by pressing <span class="tutorial">Ctrl+V</span></p>
+        <button type="button" id="withoutUpload" onclick="showPanel();">Choose colours without uploading.</button>
+        <!-- 显示已载入文件名与取色提示 -->
+        <p id="fileInfo" style="display:none;"></p>
+        <!-- PDF 页码列表：解析完成后列出所有页面，勾选即可切换正在评估的页面 -->
+        <p id="pdfPages" style="display:none;">Pages: <span id="pdfPageList"></span></p>
+        <!-- 取色目标：把图片上取到的颜色应用到文字还是背景 -->
+        <p id="sampleTargetWrap" style="display:none;">Select color for:
+            <label><input type="radio" name="sampleTarget" value="text" checked> Text</label>
+            <label><input type="radio" name="sampleTarget" value="background"> Background</label>
+            <label><input type="radio" name="sampleTarget" value="gradient1"> Gradient 1</label>
+            <label><input type="radio" name="sampleTarget" value="gradient2"> Gradient 2</label>
+            <label><input type="radio" name="sampleTarget" value="textGradient1"> Text gradient 1</label>
+            <label><input type="radio" name="sampleTarget" value="textGradient2"> Text gradient 2</label>
+        </p>
+        <!-- 图片预览画布，点击即可取色，拖动可圈定文字 -->
+        <canvas id="pickerCanvas" style="display:none; max-width:100%; cursor:crosshair;"></canvas>
+        <!-- 放大器：跟随鼠标显示放大 8 倍后的像素，便于看清并选取细小文字的颜色 -->
+        <div id="loupe" style="display:none; position:fixed; pointer-events:none; z-index:10; background:#ffffff;">
+            <canvas id="loupeCanvas" width="120" height="120" style="display:block; border:1px solid #000000;"></canvas>
+            <div id="loupeColor" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; padding:1px 2px;"></div>
+            <!-- 悬浮文本：提示当前取色将写入哪个目标（text / background / gradient 1 / gradient 2） -->
+            <div id="loupeTarget" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; padding:1px 2px; color:#1e3a8a;"></div>
+        </div>
+        <!-- 字体尺寸测量选项：勾选粗体后按 14pt 判定，否则按 18pt 判定 -->
+        <p id="measureOptions" style="display:none;"><label><input type="checkbox" id="boldText"> Bold text</label></p>
+        <!-- 字体尺寸测量结果 -->
+        <p id="measureInfo" style="display:none;"></p>
+    </div>
+    <div id="choose" hidden>
+        <h3>Color Selection Panel</h3>
+        <span class="yellow_bg">If you are using an solid color background and text:</span>
+        <p>Text: <input type="color" id="textColor" value="#000000"></p>
+        <p>background: <input type="color" id="backgroundColor" value="#ffffff"></p>
+        <!-- 渐变取色：两个渐变颜色 + 是否启用渐变计算的复选框 -->
+        <span class="yellow_bg">If you are using an gradient color background:</span>
+        <span><label><input type="checkbox" id="gradientToggle"> Gradient background</label></span>
+        <p>Gradient start: <input type="color" id="gradientColor1" value="#ffffff">
+           Gradient end: <input type="color" id="gradientColor2" value="#0000ff"></p>
+        <!-- 渐变文字：两个文字渐变色 + 是否启用渐变文字计算的复选框 -->
+        <span class="yellow_bg">If you are using an gradient color text:</span>
+        <span><label><input type="checkbox" id="textGradientToggle"> Gradient text</label></span>
+        <p>Gradient start: <input type="color" id="textGradient1" value="#000000">
+           Gradient end: <input type="color" id="textGradient2" value="#0000ff"></p>
+        <button onclick="hidePanel();">Hide Panel</button>
+    </div>
+    <div id="currentDisplay">
+        <span>Now selected: </span>
+    </div>
+    <button id="startEvaluation">Get Evaluation Result for </button>
+    <div id="result">
+        <p>The evaluation result will be displayed here.</p>
+    </div>
+</body>
+
+<footer class="footer">
+    <hr>
+    <p>Reference: <a target="_blank" href="https://www.w3.org/TR/WCAG22/"><img src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" height=11px>Content Accessibility Guidelines (WCAG) 2.2</a></p>
+    <p>Open Source Notice: PDF parsing is powered by <a href="https://mozilla.github.io/pdf.js/">PDF.js</a> (© <a href="https://www.mozilla.org/en-US/">Mozilla</a>) under <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0 License</a>.</p>
+    <p>Generative AI declaration: Acquired suggestions and tutorials from DeepSeek (deepseek.com) while programming the drag-and-drop and PDF parsing section. There is no code in this file (evaluator.html) that was directly generated by artifical intelligence.</p>
+    <p>Except where otherwise noted, content on this site is licensed under 
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International.</a>
+            <img class="copyright" src="https://creativecommons.org/wp-content/themes/vocabulary-theme/vocabulary/svg/cc/icons/cc-icons.svg#cc-logo">
+        <img class="copyright" src="https://creativecommons.org/wp-content/themes/vocabulary-theme/vocabulary/svg/cc/icons/cc-icons.svg#cc-by">
+        <img class="copyright" src="https://creativecommons.org/wp-content/themes/vocabulary-theme/vocabulary/svg/cc/icons/cc-icons.svg#cc-sa"></p>
+    <p>Friendly Link: <a target="_blank" href="https://www.cs.cityu.edu.hk/en"><img src="https://www.cityu.edu.hk/image/mini_logo.svg" height=10px>Department of Computer Science</a>|<a target="_blank" href="https://cityu.edu.hk"><img src="https://www.cityu.edu.hk/image/mini_logo.svg" height=10px>City University of Hong Kong</a></p>
+
+    </footer>
+
