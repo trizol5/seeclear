@@ -1,5 +1,5 @@
 console.log("checker.js loaded");
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs/pdf.worker.min.js";
 console.log("PDF.js worker ready");
 const textColorInput = document.getElementById("text-color");
 const backgroundColorInput = document.getElementById("background-color");
@@ -19,6 +19,7 @@ const button = document.getElementById("apply-suggestion");
 const dropZone = document.getElementById("drop-zone");
 const fileError = document.getElementById("file-error");
 let currentSuggestion = "";
+
 function showResult(li, label, target, ratio) {
     if (ratio >= target) {
         li.textContent = `✔ ${label} (${target}:1)`;
@@ -33,35 +34,57 @@ function update() {
     preview.style.color = textColor;
 
     let ratio = contrast(textColor, backgroundColor);
-    
+
     if (gradientToggle.checked) {
         preview.style.background = `linear-gradient(to right, ${backgroundColor}, ${gradientEndColor})`;
     } else {
         preview.style.background = backgroundColor;
     }
-    
+
     let ratio2 = contrast(textColor, gradientEndInput.value);
     if (gradientToggle.checked) {
         ratio = Math.min(ratio, ratio2);
-        
-    } 
-    ratio = (Math.floor(ratio * 100)) / 100;
-    let worstBg=backgroundColor;
-    if(gradientToggle.checked && ratio2< contrast(textColor, backgroundColor)) {
-        worstBg = gradientEndInput.value;
     }
-    if(gradientToggle.checked) {
+    ratio = Math.floor(ratio * 100) / 100;
+    if (gradientToggle.checked) {
         contrastRatioOutput.textContent = `Lowest contrast across the gradient: ${ratio}:1`;
     } else {
         contrastRatioOutput.textContent = `Contrast Ratio: ${ratio}:1`;
     }
-    if(ratio < 4.5) {
-        currentSuggestion = suggestColor(textColor, worstBg, 4.5);
-        document.getElementById("suggestion").textContent = `Suggested text color for AA normal: ${currentSuggestion}`;
-        suggestionSwatch.style.backgroundColor = currentSuggestion;
-        suggestionSwatch.setAttribute("aria-label", `Suggested color ${currentSuggestion}`);
-        suggestionSwatch.hidden = false;
-        button.hidden = false;
+    if (ratio < 4.5) {
+        currentSuggestion = suggestColor(textColor, backgroundColor, 4.5);
+        if (
+            currentSuggestion === "" ||
+            contrast(currentSuggestion, backgroundColor) < 4.5 ||
+            (gradientToggle.checked &&
+                contrast(currentSuggestion, gradientEndColor) < 4.5)
+        ) {
+            currentSuggestion = suggestColor(textColor, gradientEndColor, 4.5);
+            if (
+                currentSuggestion === "" ||
+                contrast(currentSuggestion, backgroundColor) < 4.5 ||
+                (gradientToggle.checked &&
+                    contrast(currentSuggestion, gradientEndColor) < 4.5)
+            ) {
+                currentSuggestion = "";
+            }
+        }
+        if (currentSuggestion === "") {
+            document.getElementById("suggestion").textContent =
+                `No text colour can reach this target on this background.`;
+            button.hidden = true;
+            suggestionSwatch.hidden = true;
+        } else {
+            document.getElementById("suggestion").textContent =
+                `Suggested text color for AA normal: ${currentSuggestion}`;
+            suggestionSwatch.style.backgroundColor = currentSuggestion;
+            suggestionSwatch.setAttribute(
+                "aria-label",
+                `Suggested color ${currentSuggestion}`,
+            );
+            suggestionSwatch.hidden = false;
+            button.hidden = false;
+        }
     } else {
         currentSuggestion = "";
         document.getElementById("suggestion").textContent = "";
@@ -75,11 +98,36 @@ function update() {
 }
 function suggestColor(textHex, bgHex, target) {
     let goDark = false;
+    let targetL = 0;
+    let k = 0;
     let rgb = hexToRgb(textHex);
     goDark = contrast(bgHex, "#000000") > contrast(bgHex, "#ffffff");
-    let steps= 0;
+    if (contrast(textHex, bgHex) >= target) {
+        return textHex;
+    }
+    let bgL = luminance(hexToRgb(bgHex));
+    let textL = luminance(rgb);
+    if (textL > 0) {
+        if (goDark === true) {
+            targetL = (bgL + 0.05) / target - 0.05;
+        } else {
+            targetL = target * (bgL + 0.05) - 0.05;
+        }
+        k = targetL / textL;
+    }
+    if (k > 0) {
+        for (let i = 0; i < 3; i++) {
+            let v = unlinearChannel(k * linearChannel(rgb[i]));
+            if (goDark) {
+                rgb[i] = Math.max(0, Math.floor(v));
+            } else {
+                rgb[i] = Math.min(255, Math.ceil(v));
+            }
+        }
+    }
+    let steps = 0;
     while (contrast(rgbToHex(rgb), bgHex) < target && steps < 255) {
-        for(let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
             if (goDark) {
                 rgb[i] = Math.max(0, rgb[i] - 1);
             } else {
@@ -88,18 +136,20 @@ function suggestColor(textHex, bgHex, target) {
         }
         steps++;
     }
+    const newContrast = contrast(rgbToHex(rgb), bgHex);
+    if (newContrast < target) {
+        return "";
+    }
     return rgbToHex(rgb);
-
 }
 async function loadFile(file) {
-    
     if (file === undefined) {
         return;
     }
-    if(!file.type.startsWith("image/") && file.type !== "application/pdf") {
+    if (!file.type.startsWith("image/") && file.type !== "application/pdf") {
         fileError.textContent = "Please upload an image or PDF file.";
         return;
-    }else{
+    } else {
         fileError.textContent = "";
     }
     if (file.type === "application/pdf") {
@@ -117,14 +167,13 @@ async function loadFile(file) {
             ctx.canvas.width = img.width;
             ctx.canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-        }
+        };
         img.src = URL.createObjectURL(file);
     }
 }
 imageUpload.addEventListener("change", function () {
     let file = this.files[0];
     loadFile(file);
-
 });
 ctx.canvas.addEventListener("click", function (event) {
     let x = event.offsetX;
@@ -135,14 +184,15 @@ ctx.canvas.addEventListener("click", function (event) {
     y = Math.floor(y * scaleY);
     let pixel = ctx.getImageData(x, y, 1, 1).data;
     let hex = rgbToHex([pixel[0], pixel[1], pixel[2]]);
-    let colorType = document.querySelector('input[name="color-type"]:checked').value;
+    let colorType = document.querySelector(
+        'input[name="color-type"]:checked',
+    ).value;
     if (colorType === "text") {
         textColorInput.value = hex;
     } else {
         backgroundColorInput.value = hex;
     }
     update();
-
 });
 gradientToggle.addEventListener("change", function () {
     if (this.checked) {

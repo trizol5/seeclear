@@ -4,13 +4,23 @@ function hexToRgb(hex) {
     const b = hex.substring(5, 7);
     return [parseInt(r, 16), parseInt(g, 16), parseInt(b, 16)];
 }
-function linearChannel(value){
+function linearChannel(value) {
     value /= 255;
-    if(value <= 0.04045){
+    if (value <= 0.04045) {
         return value / 12.92;
     } else {
         return Math.pow((value + 0.055) / 1.055, 2.4);
     }
+}
+
+function unlinearChannel(c) {
+    let tmp;
+    if (c <= 0.0031308) {
+        tmp = c * 12.92;
+    } else {
+        tmp = 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+    }
+    return tmp * 255;
 }
 
 function luminance(rgb) {
@@ -20,7 +30,7 @@ function luminance(rgb) {
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-function contrast(hex1,hex2){
+function contrast(hex1, hex2) {
     const rgb1 = hexToRgb(hex1);
     const rgb2 = hexToRgb(hex2);
     const lum1 = luminance(rgb1);
@@ -31,8 +41,8 @@ function contrast(hex1,hex2){
 }
 
 function rgbToHex(rgb) {
-    const r = rgb[0].toString(16).padStart(2, '0');
-    const g = rgb[1].toString(16).padStart(2, '0');
-    const b = rgb[2].toString(16).padStart(2, '0');
-    return '#' + r + g + b;
+    const r = rgb[0].toString(16).padStart(2, "0");
+    const g = rgb[1].toString(16).padStart(2, "0");
+    const b = rgb[2].toString(16).padStart(2, "0");
+    return "#" + r + g + b;
 }
