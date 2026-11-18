@@ -16,7 +16,7 @@ let current = 0;
 const question = [
 { text: "City University of Hong Kong", 
                    color: "#d9d9d9", 
-                   background: "#e59edd", 
+                   background: "#ef7fe3", 
                    target: 3.0 , 
                    fontSize: "34px",},
 { text: "CS 1102\nIntroduction to Computer Studies",
