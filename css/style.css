@@ -99,3 +99,10 @@ footer{
     border-color: #000;
     background-color: #f0f0f0;
 }
+#question-image{ 
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin:10px 0;
+}
