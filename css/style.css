@@ -1,3 +1,23 @@
+.site-nav {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-links {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 8px 0;
+    list-style: none;
+}
+
+.nav-links li {
+    flex: 0 0 auto;
+}
+
 .map {
     width: 200px;
     height: 20px;
