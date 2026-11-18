@@ -27,6 +27,13 @@ for (let i = 0; i < lines.length; i++) {
         if (selected === null) {
             return;
         }
+        const previousAnswer = div.dataset.answer;
+        if (previousAnswer) {
+            const previousChoice = choices.querySelector(`[data-number="${previousAnswer}"]`);
+            if (previousChoice) {
+                previousChoice.disabled = false;
+            }
+        }
         div.dataset.answer = selected.dataset.number;
         div.textContent = (i + 1) + ": " + selected.textContent;
         selected.classList.remove("selected");
@@ -56,6 +63,7 @@ for (let i = 0; i < shuffled.length; i++) {
 }
 
 const checkButton = document.getElementById("check-button");
+const resetButton = document.getElementById("reset-button");
 const nextblock = document.getElementById("next-block");
 const history = document.getElementById("history");
 const result = document.getElementById("result");
