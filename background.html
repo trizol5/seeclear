@@ -27,17 +27,27 @@
     </header>
 
     <main id="main">
-        <h2>Welcome to SeeClear</h2>
-        <p>Your tool for checking color contrast and accessibility.</p>
-        <p>About SeeClear</p>
-        <p>SeeClear is a website dedicated to the health and welfare of the visually impaired community. 
-            We take a clear stand in support of visually impaired people and their right to equal access to information. 
-            The site helps students understand the everyday difficulties visually impaired readers face when reading text materials. 
-            It also shows how color choices and contrast can make public text materials easy or hard to read. 
-            In doing so, SeeClear reminds presenters and creators of public materials to avoid color combinations that harm readability for visually impaired audiences.
-        </p>
-
+        <h2>Why Colour Contrast Matters</h2>
+        <p>Good colour contrast makes text easier to read for everyone, including people with visual impairments. Thoughtful colour choices can make websites, posters, and presentations more accessible.</p>
+        <section class="background-charts" aria-label="Population statistics">
+            <article class="chart-card">
+                <h3>Population by year</h3>
+                <p class="chart-description">Bar height shows population; the line shows its share of the total population.</p>
+                <div class="chart-frame">
+                    <svg id="population-chart" viewBox="0 0 760 390" role="img" aria-label="Population: 12.26w in 2009, 16.61w in 2013, 19.96w in 2020; corresponding shares: 1.8, 2.3, 2.7 percent."></svg>
+                </div>
+            </article>
+            <article class="chart-card">
+                <h3>Population by age</h3>
+                <p class="chart-description">Share of the total population in each age group.</p>
+                <div class="age-chart-layout">
+                    <svg id="age-chart" viewBox="0 0 320 320" role="img" aria-label="Age distribution: 15岁以下 1.6 percent, 15–29岁 1.6 percent, 30–39岁 1.3 percent, 40–49岁 3.6 percent, 50–59岁 8.8 percent, 60–64岁 9.6 percent, 65–69岁 11.9 percent, 70岁及以上 61.6 percent."></svg>
+                    <ul id="age-legend" class="age-legend" aria-label="Age group percentages"></ul>
+                </div>
+            </article>
+        </section>
     </main>
+    <script src="js/background.js"></script>
 </body>
 
 </html>
