@@ -13,9 +13,9 @@ let questionNumber = document.getElementById("question-number");
 let solvedNumber = document.getElementById("solved-number");
 let current = 0;
 
-const question = [{ text: "Large Heading text", color: "#b45959", background: "#ca3ba6", target: 3.0 , image:"img/img.game2-example1.png", alt:"Example1"},
-{ text: "Normal text", color: "#7f8cb8", background: "#ffffff", target: 4.5 , image:"img/img.game2-example2.png", alt:"Example2"},
-{ text: "Small text", color: "#b1af48", background: "#ffffff", target: 7.0 , image:"img/img.game2-example3.png", alt:"Example3"},];
+const question = [{ text: "Large Heading text", color: "#b45959", background: "#ca3ba6", target: 3.0 , image:"img/game2-example1.png", alt:"Example1"},
+{ text: "Normal text", color: "#7f8cb8", background: "#ffffff", target: 4.5 , image:"img/game2-example2.png", alt:"Example2"},
+{ text: "Small text", color: "#b1af48", background: "#ffffff", target: 7.0 , image:"img/game2-example3.png", alt:"Example3"},];
 let solved = new Array(question.length).fill(false);
 function update() {
     const r = Number(document.getElementById("red").value);
