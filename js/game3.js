@@ -1,12 +1,19 @@
 console.log("game3.js loaded");
 const posterBackground = "#1f3a5f";
-const lines = [{ text: "CityU Charity Run", color: "#15557a", large: true },
-{ text: "Sat 5 Dec, 9am", color: "#53359b", large: false },
-{ text: "Sign up at the SU office", color: "#087465", large: false },
-];
+const lines = [
+{ text: "Good health and well-being", color: "#15557a", large: true },
+{ text: "People who are visually impaired deserve the same opportunities, dignity, and safety as everyone else.", 
+  color: "#53359b", large: false },
+{text:"Everyday barriers like inaccessible websites and blocked sidewalks still limit their lives.",
+ color:"#087465", large: false },
+{text:"Small acts of awareness can build a fairer world for them.",
+ color:"#76505e", large: false },
+{text:"Actions begin with provide text that is easy to read.",
+ color:"#5e6573", large: false },
+               ];
 const palette = ["#ffd54f", "#90caf9", "#ff9800", "#e57373", "#f06292", "#4caf50", "#9e9e9e"];
 let selected = null;
-let stepsleft = 5;
+let stepsleft = 8;
 const paletteElement = document.getElementById("palette");
 const poster = document.getElementById("poster");
 const stepsLeftElement = document.getElementById("steps");
@@ -19,7 +26,7 @@ for (let i = 0; i < lines.length; i++) {
     const p = document.createElement("p");
     p.textContent = lines[i].text;
     if (lines[i].large) {
-        p.style.fontSize = "28px";
+        p.style.fontSize = "34px";
     }
     if (lines[i].color) {
         p.style.color = lines[i].color;
