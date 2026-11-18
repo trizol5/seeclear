@@ -27,6 +27,34 @@
     <main id="main">
         <h2>Colour Contrast Checker</h2>
         <p>Pick a text colour and a background colour for your poster or slides.</p>
+        <div class="checker-upload-layout">
+            <section class="checker-options" aria-label="Colour settings">
+                <div class="checker-control">
+                    <label for="text-color">Text Color:</label>
+                    <input type="color" id="text-color" value="#777777">
+                </div>
+                <div class="checker-control">
+                    <label for="background-color">Background Color:</label>
+                    <input type="color" id="background-color" value="#ffffff">
+                </div>
+                <div class="checker-control checker-gradient-toggle">
+                    <label for="gradient-toggle">Background is gradient</label>
+                    <input type="checkbox" id="gradient-toggle">
+                </div>
+                <div id="gradient-options" hidden>
+                    <label for="gradient-end">End Color:</label>
+                    <input type="color" id="gradient-end" value="#000000">
+                    <p>The background colour above is used as the gradient start.</p>
+                </div>
+            </section>
+            <div id="drop-zone">
+                <label for="image-upload">Upload an image or PDF to check the contrast of text on it.</label>
+                <input type="file" accept="image/*,application/pdf" id="image-upload">
+                <p>Or drag and drop it here.</p>
+                <p id="file-error" role="alert"></p>
+            </div>
+        </div>
+        <p>Choose what to pick, then click on the image.</p>
         <label for="text-color">Text Color:</label>
         <input type="color" id="text-color" value="#777777">
         <label for="background-color">Background Color:</label>
