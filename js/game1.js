@@ -9,14 +9,6 @@ const lines = [{ name: "Kwun Tong Line", color: "#00AB4E", number: 1 },
 { name: "South Island Line", color: "#BAC429", number: 5 },
 { name: "Tuen Ma Line", color: "#923011", number: 6 }];
 
-const map = document.getElementById("mtr-map");
-for (let i = 0; i < lines.length; i++) {
-    let div = document.createElement("div");
-    div.classList.add("map");
-    div.style.backgroundColor = lines[i].color;
-    div.textContent = lines[i].number;
-    map.appendChild(div);
-}
 const slots = document.getElementById("mtr-slots");
 for (let i = 0; i < lines.length; i++) {
     let div = document.createElement("div");
