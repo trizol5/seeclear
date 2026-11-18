@@ -66,8 +66,20 @@
 }
 
 #card {
-    padding: 10px;
-    font-size: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1100px;
+    min-height: 150px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+#card-text {
+    margin: 0;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
 }
 
 #poster {
