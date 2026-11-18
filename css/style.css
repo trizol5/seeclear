@@ -207,3 +207,83 @@ footer{
     font-size: 1.125rem;
     line-height: 1.6;
 }
+
+.background-charts {
+    display: grid;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.chart-card {
+    min-width: 0;
+    padding: clamp(18px, 3vw, 28px);
+    background: #fff;
+    border: 1px solid #d7e0ea;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgb(24 35 50 / 8%);
+}
+
+.chart-card h3 {
+    margin: 0 0 6px;
+    color: #182332;
+    font-size: 1.25rem;
+}
+
+.chart-description {
+    margin: 0 0 12px;
+    color: #526174;
+}
+
+.chart-frame {
+    width: 100%;
+    overflow: hidden;
+}
+
+#population-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.chart-gridline { stroke: #dce3eb; stroke-width: 1; }
+.chart-axis { stroke: #526174; stroke-width: 1.5; }
+.chart-tick, .chart-year, .chart-value, .chart-axis-title {
+    fill: #26364a;
+    font-family: inherit;
+}
+.chart-tick { font-size: 12px; }
+.chart-year { font-size: 14px; font-weight: 650; }
+.chart-value { font-size: 13px; font-weight: 700; }
+.chart-bar-value { fill: #fff; }
+.chart-axis-title { font-size: 12px; font-weight: 650; }
+.chart-bar { fill: #3478d4; }
+.chart-line { fill: none; stroke: #e76f25; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.chart-point { fill: #fff; stroke: #c95112; stroke-width: 3; }
+
+.age-chart-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) minmax(220px, 1fr);
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+#age-chart { display: block; width: 100%; max-width: 320px; height: auto; margin: auto; }
+.age-slice { stroke: #fff; stroke-width: 2; }
+.age-pie { transform-box: view-box; transform-origin: center; }
+.age-legend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    gap: 10px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.age-legend li { display: flex; align-items: center; gap: 8px; color: #26364a; }
+.age-legend-swatch { flex: 0 0 14px; width: 14px; height: 14px; border-radius: 3px; }
+
+@media (max-width: 620px) {
+    .age-chart-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    #age-chart { max-width: 280px; }
+    .age-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); font-size: .92rem; }
+}
