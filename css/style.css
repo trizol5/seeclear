@@ -83,10 +83,25 @@
 }
 
 #poster {
-    width: 200px;
-    min-height: 500px;
-    margin: 10px;
-    padding: 20px;
+    box-sizing: border-box;
+    width: min(100%, 720px);
+    min-height: 520px;
+    margin: 20px auto;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+}
+#poster p {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: 22px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
 }
 
 #palette {
@@ -147,10 +162,13 @@ footer{
     border-color: #000;
     background-color: #f0f0f0;
 }
-#question-image{ 
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    margin:10px 0;
+@media (max-width: 600px) {
+    #poster {
+        min-height: 420px;
+        padding: 24px;
+    }
+
+    #poster p {
+        font-size: 18px;
+    }
 }
