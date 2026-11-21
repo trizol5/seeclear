@@ -86,7 +86,7 @@ checkButton.addEventListener("click", function () {
 
     result.textContent = `You got ${correctCount} out of ${slots.children.length} correct!`;
 });
-button.addEventListener("click", function () {
+resetButton.addEventListener("click", function () {
     if (selected) {
         selected.classList.remove("selected");
     }
